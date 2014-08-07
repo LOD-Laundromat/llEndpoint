@@ -1,7 +1,7 @@
 :- module(
-  ll_schema_export,
+  schema_export,
   [
-    ll_schema_export/0
+    schema_export/0
   ]
 ).
 
@@ -21,19 +21,19 @@ Exports the LOD Laundromat schema.
 
 :- use_module(plGraphViz(gv_file)).
 
-:- use_module(ll_schema(ll_schema)).
+:- use_module(lle_schema(schema)).
 
 
 
-%! export_ll_schema is det.
+%! export_schema is det.
 
-export_ll_schema:-
-  export_ll_schema(ll).
+export_schema:-
+  export_schema(ll).
 
-%! export_ll_schema(+Graph:atom) is det.
+%! export_schema(+Graph:atom) is det.
 
-export_ll_schema(Graph):-
-  assert_ll_schema(Graph),
+export_schema(Graph):-
+  assert_schema(Graph),
   
   % GIF
   maplist(

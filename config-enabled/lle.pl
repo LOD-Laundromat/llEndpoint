@@ -12,25 +12,32 @@
   :- ensure_loaded('../load').
 :- endif.
 
-:- http_handler(cliopatria(basket), basket, []).
 
-:- ensure_loaded(plServer(style)).
-
+% Serves clean data documents.
+:- http_handler(
+  cliopatria(data),
+  serve_files_in_directory_with_cors(data),
+  [id(data),prefix]
+).
 
 
 % Load the LOD Laundromat schema.
-
-:- use_module(lle_schema(ll_schema)).
-
+:- use_module(lle_schema(schema)).
 
 
-% plTabular
+% LOD Basket.
+:- use_module(lle_basket(basket_web)).
+:- http_handler(cliopatria(basket), basket, []).
 
+
+% plTabular endpoint.
+:- use_module(plTabular(rdf_tabular)).
 :- http_handler(cliopatria(plTabular), rdf_tabular, [id(plTabular)]).
 
-:- use_module(plTabular(rdf_tabular)).
 rdf_tabular(Request):-
   rdf_tabular(Request, plTabular).
+
+:- ensure_loaded(plServer(style)).
 
 :- multifile(user:body//2).
 user:body(plTabular, Body) -->
@@ -38,20 +45,15 @@ user:body(plTabular, Body) -->
   user:body(cliopatria(default), Body).
 
 
-
-% LOD InfoBox
-
-:- http_handler(cliopatria(infobox), ll_infobox, [prefix]).
-
+% llInfobox endpoint.
 :- use_module(lle(ll_infobox)).
+:- http_handler(cliopatria(infobox), ll_infobox, [id(llInfobox)]).
 
 
+% LOD Washing Machine endpoint.
+:- use_module(lle_deb(lwm_web_deb)).
+:- http_handler(cliopatria(lwm), lwm_web, [id(lwm)]).
 
-% LOD-Washing-Machine
-
-:- http_handler(cliopatria(lwm), lwm_web, [prefix]).
-
-:- use_module(lle(lwm_web)).
 lwm_web(Request):-
   lwm_web(Request, cliopatria(default)).
 

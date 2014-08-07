@@ -23,9 +23,7 @@ Web-based front-end to the LOD basket.
 :- use_module(generics(typecheck)).
 :- use_module(xsd(xsd_dateTime_ext)).
 
-:- use_module(ll_web(ll_basket)).
-
-:- rdf_register_prefix(ll, '').
+:- use_module(lle(lle_settings)).
 
 
 
@@ -69,12 +67,13 @@ add_to_basket(Url1):-
 %! store_url(+Md5:atom, +Url:url) is det.
 
 store_url(Md5, Url):-
-  ll_dissemination_graph(Graph),
-  rdf_assert(ll:Md5, rdf:type, ll:'URL', Graph),
-  rdf_assert(ll:Md5, ll:md5, literal(type(xsd:string,Md5)), Graph),
-  rdf_assert(ll:Md5, ll:url, Url, Graph),
+  lle_graph(dissemination, Graph),
+  rdf_global_id(ll:Md5, Resource),
+  rdf_assert(Resource, rdf:type, ll:'URL', Graph),
+  rdf_assert(Resource, ll:md5, literal(type(xsd:string,Md5)), Graph),
+  rdf_assert(Resource, ll:url, Url, Graph),
   get_dateTime(Added),
-  rdf_assert(ll:Md5, ll:added, literal(type(xsd:dateTime,Added)), Graph).
+  rdf_assert(Resource, ll:added, literal(type(xsd:dateTime,Added)), Graph).
 
 
 

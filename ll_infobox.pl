@@ -27,6 +27,8 @@ for use in LOD Laundromat.
 
 :- use_module(plTabular(rdf_html_table)).
 
+:- use_module(lle(lle_settings)).
+
 
 
 ll_infobox(Request):-
@@ -35,7 +37,7 @@ ll_infobox(Request):-
 
 ll_infobox_with_cors(Request):-
   request_search_read(Request, md5, Md5), !,
-  ll_sparql_default_graph(dissemination, Graph),
+  lle_graph(dissemination, Graph),
   aggregate_all(
     set([P,O]),
     (
@@ -57,23 +59,4 @@ ll_infobox_with_cors(Request):-
   print_html(Tokens).
 ll_infobox_with_cors(_):-
   throw(http_reply(bad_request('Could not find md5 search term.'))).
-
-
-
-% Helpers
-
-%! ll_sparql_default_graph(
-%!   +Mode:oneof([collection,dissemination]),
-%!   -DefaultGraph:iri
-%! ) is det.
-
-ll_sparql_default_graph(Mode, DefaultGraph):-
-  ll_dissemination_version(Version),
-  atom_number(Fragment, Version),
-  uri_components(
-    DefaultGraph,
-    uri_components(http, 'lodlaundromat.org', _, _, Fragment)
-  ).
-
-ll_dissemination_version(10).
 

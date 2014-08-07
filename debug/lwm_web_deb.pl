@@ -1,12 +1,17 @@
 :- module(
   lwm_web_deb,
   [
-    lwm_web_deb/2 % +Request:list
-                  % +HtmlStyle:atom
+    lwm_web_deb/2, % +Request:list
+                   % +HtmlStyle:atom
+    serve_files_in_directory_with_cors/2 % +Alias:atom
+                                         % +Request:list(nvpair)
   ]
 ).
 
-/** <module> LOD laundry
+/** <module> LOD laundry overview
+
+Overview of the processing of the LOD Washing Machine,
+intended for debugging purposes.
 
 @author Wouter Beek
 @version 2014/05-2014/06, 2014/08
@@ -27,15 +32,9 @@
 
 :- use_module(plTabular(rdf_html_table_pairs)).
 
-:- use_module(ll_sparql(ll_sparql_endpoint)).
+:- use_module(lle(lle_settings)).
 
 :- dynamic(url_md5_translation/2).
-
-:- http_handler(
-  cliopatria(data),
-  serve_files_in_directory_with_cors(data),
-  [id(clean),prefix]
-).
 
 
 
@@ -59,7 +58,7 @@ lwm_web_deb(_, HtmlStyle):-
 %! lwm_web_deb_mode(+Mode:oneof([collection,dissemination]))// is det.
 
 lwm_web_deb_mode(Mode) -->
-  {ll_sparql_default_graph(Mode, Graph)},
+  {lle_graph(Mode, Graph)},
   pending(Graph),
   unpacking(Graph),
   unpacked(Graph),
