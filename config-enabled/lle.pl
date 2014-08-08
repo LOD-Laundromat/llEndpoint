@@ -29,19 +29,21 @@
 :- http_handler(cliopatria(basket), basket, []).
 
 
+% HTML style.
+:- ensure_loaded(plServer(style)).
+:- multifile(user:body//2).
+user:body(lle, Body) -->
+  html_requires(css('plServer.css')),
+  user:body(cliopatria(default), Body).
+
+
+
 % plTabular endpoint.
 :- use_module(plTabular(rdf_tabular)).
 :- http_handler(cliopatria(plTabular), rdf_tabular, [id(plTabular)]).
 
 rdf_tabular(Request):-
-  rdf_tabular(Request, plTabular).
-
-:- ensure_loaded(plServer(style)).
-
-:- multifile(user:body//2).
-user:body(plTabular, Body) -->
-  html_requires(css('plServer.css')),
-  user:body(cliopatria(default), Body).
+  rdf_tabular(Request, lle).
 
 
 % llInfobox endpoint.
@@ -54,5 +56,5 @@ user:body(plTabular, Body) -->
 :- http_handler(cliopatria(lwm), lwm_deb, [id(lwm)]).
 
 lwm_deb(Request):-
-  lwm_deb(Request, cliopatria(default)).
+  lwm_deb(Request, lle).
 

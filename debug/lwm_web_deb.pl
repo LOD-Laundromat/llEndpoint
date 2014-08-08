@@ -30,6 +30,7 @@ intended for debugging purposes.
 
 :- use_module(plRdf_term(rdf_literal)).
 
+:- use_module(plTabular(rdf_html_table)).
 :- use_module(plTabular(rdf_html_table_pairs)).
 
 :- use_module(lle(lle_settings)).
@@ -44,19 +45,22 @@ serve_files_in_directory_with_cors(Alias, Request):-
 
 
 lwm_deb(_, HtmlStyle):-
+  Version = 11,
+  lle_graph(Version, Graph),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
     html([
       h1('Overview of dissemination version'),
-      \lwm_deb_version(11)
+      \lwm_deb_version(Graph),
+      h1('Overview of LWM status terms'),
+      \lwm_status_terms(Graph)
     ])
   ).
 
-%! lwm_deb_version(+Version:positive_integer)// is det.
+%! lwm_deb_version(+Graph:atom)// is det.
 
-lwm_deb_version(Version) -->
-  {lle_graph(Version, Graph)},
+lwm_deb_version(Graph) -->
   pending(Graph),
   unpacking(Graph),
   unpacked(Graph),
@@ -182,4 +186,67 @@ cleaned(Graph) -->
       maximum_number_of_rows(10)
     ]
   ).
+
+lwm_status_terms(Graph) -->
+  {
+    findall(
+      Status2-Datadoc,
+      (
+        rdf(Datadoc, ll:status, Status1, Graph),
+        status_to_atom(Status1, Status2)
+      ),
+      Pairs1
+    ),
+    keysort(Pairs1, Pairs2),
+    group_pairs_by_key(Pairs2, Pairs3)
+  },
+  lwm_status_tables(Graph, Pairs3).
+
+lwm_status_tables(_, []) --> [].
+lwm_status_tables(Graph, [Status-Datadocs|T]) -->
+  lwm_status_table(Graph, Status, Datadocs),
+  lwm_status_tables(Graph, T).
+
+lwm_status_table(Graph, Status, Datadocs1) -->
+  {
+    sort(Datadocs1, Datadocs2),
+    maplist(datadoc_to_row(Graph), Datadocs2, Rows),
+    length(Datadocs2, Length)
+  },
+  rdf_html_table(
+    html([
+      \html_pl_term(lwm,Length),
+      ' data documents with status ',
+      \html_pl_term(lwm,Status)
+    ]),
+    [['Datadoc','Dirty URL']|Rows],
+    [graph(Graph),header_row(true)]
+  ).
+
+datadoc_to_row(Graph, Datadoc, [Datadoc,Url]):-
+  rdf(Datadoc, ll:url, Url, Graph).
+
+status_to_atom(literal(type(XsdString,Status1)), Status2):-
+  rdf_equal(xsd:string, XsdString),
+  read_term_from_atom(Status1, StatusTerm, []),
+  once(status_to_atom0(StatusTerm, Status2)), !.
+status_to_atom(Status, Status).
+
+status_to_atom0(exception(error(existence_error(directory,_),_)), existence_error_directory).
+status_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
+status_to_atom0(exception(error(http_status(Status),_)), Label):-
+  atomic_list_concat([http_status,Status], '_', Label).
+status_to_atom0(exception(error(instantiation_error,_)), instantiation_error).
+status_to_atom0(exception(error(io_error(Mode,_),_)), Label):-
+  atomic_list_concat([io_error,Mode], '_', Label).
+status_to_atom0(exception(error(limit_exceeded(max_errors,_),_)), limit_exceeded_max_errors).
+status_to_atom0(exception(error(no_rdf(_))), no_rdf).
+status_to_atom0(exception(error(socket_error(_),_)), socket_error).
+status_to_atom0(exception(error(ssl_error(Kind),_)), Label):-
+  atomic_list_concat([ssl_error,Kind], '_', Label).
+status_to_atom0(exception(error(timeout_error(Mode,_),_)), Label):-
+  atomic_list_concat([timeout_error,Mode], '_', Label).
+status_to_atom0(exception(error(type_error(xml_dom,_),_)), type_error_xml_dom).
+status_to_atom0(false, false).
+status_to_atom0(true, true).
 
