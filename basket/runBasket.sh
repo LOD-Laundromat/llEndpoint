@@ -11,8 +11,8 @@
 scheme="http"
 
 # Choose one authority.
-####authority="localhost:3040"
-authority="lodlaundry.wbeek.ops.few.vu.nl"
+authority="localhost:3020"
+####authority="lodlaundry.wbeek.ops.few.vu.nl"
 ####authority="virtuoso.lodlaundromat.ops.few.vu.nl"
 
 path="/basket"

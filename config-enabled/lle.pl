@@ -8,7 +8,6 @@
    cliopatria:menu_item(600=places/plTabular, plTabular).
 
 :- if(\+ current_module(load_project)).
-  :- ensure_loaded('../debug').
   :- ensure_loaded('../load').
 :- endif.
 
@@ -52,8 +51,8 @@ user:body(plTabular, Body) -->
 
 % LOD Washing Machine endpoint.
 :- use_module(lle_deb(lwm_web_deb)).
-:- http_handler(cliopatria(lwm), lwm_web, [id(lwm)]).
+:- http_handler(cliopatria(lwm), lwm_web_deb, [id(lwm)]).
 
-lwm_web(Request):-
-  lwm_web(Request, cliopatria(default)).
+lwm_web_deb(Request):-
+  lwm_web_deb(Request, cliopatria(default)).
 

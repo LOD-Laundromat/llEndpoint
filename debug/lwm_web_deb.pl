@@ -48,17 +48,24 @@ lwm_web_deb(_, HtmlStyle):-
     HtmlStyle,
     title('LOD Laundromat'),
     html([
-      h1('Overview of collection version'),
-      \lwm_web_deb_mode(collection),
       h1('Overview of dissemination version'),
-      \lwm_web_deb_mode(dissemination)
+      \lwm_web_deb_mode
     ])
   ).
 
-%! lwm_web_deb_mode(+Mode:oneof([collection,dissemination]))// is det.
+%! lwm_web_deb_mode// is det.
 
-lwm_web_deb_mode(Mode) -->
-  {lle_graph(Mode, Graph)},
+lwm_web_deb_mode -->
+  {lle_graph(Graph)},
+  lwm_web_deb0(Graph).
+
+%! lwm_web_deb_mode(+Version:positive_integer)// is det.
+
+lwm_web_deb(Version) -->
+  {lle_graph(Version, Graph)},
+  lwm_web_deb0(Graph).
+
+lwm_web_deb0(Graph) -->
   pending(Graph),
   unpacking(Graph),
   unpacked(Graph),

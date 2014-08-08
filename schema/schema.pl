@@ -23,12 +23,16 @@ Generates the schema file for the LOD Washing Machine.
 %! assert_schema is det.
 
 assert_schema:-
-  lle_graph(dissemination, Graph),
-  assert_schema(Graph).
+  lle_graph(Graph),
+  assert_schema0(Graph).
 
-%! assert_schema(+Graph:atom) is det.
+%! assert_schema(+Version:positive_integer) is det.
 
-assert_schema(Graph):-
+assert_schema(Version):-
+  lle_graph(Version, Graph),
+  assert_schema0(Graph).
+
+assert_schema0(Graph):-
   % ArchiveEntry and URL partition the space of data documents.
   % Some data documents are in Archive.
 

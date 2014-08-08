@@ -1,8 +1,9 @@
 :- module(
   lle_settings,
   [
-    lle_graph/2 % +Mode:oneof([collection,dissemination]),
-                        % -DefaultGraph:iri
+    lle_graph/1, % -Graph:iri
+    lle_graph/2 % +Version:positive_integer
+                % -Graph:iri
   ]
 ).
 
@@ -17,23 +18,30 @@ Settings for operating the LOD Laundromat endpoint.
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 
+:- use_module(generics(typecheck)).
+
 :- rdf_register_prefix(ll, 'http://lodlaundromat.org/vocab#').
 
 
 
-%! lle_graph(+Mode:oneof([collection,dissemination]), -Graph:iri) is det.
+%! lle_graph(-Graph:iri) is det.
 
-lle_graph(Mode, DefaultGraph):-
-  lle_version(Mode, Version),
+lle_graph(Graph):-
+  lle_version(Version),
+  lle_graph(Version, Graph).
+
+
+%! lle_graph(+Version:positive_integer, -Graph:iri):-
+
+lle_graph(Version, Graph):-
+  positive_integer(Version),
   atom_number(Fragment, Version),
   lle_uri_components(uri_components(Scheme,Authority,_,_,_)),
-  uri_components(
-    DefaultGraph,
-    uri_components(Scheme,Authority,_,_,Fragment)
-  ).
+  uri_components(Graph, uri_components(Scheme,Authority,_,_,Fragment)).
+
 
 lle_uri_components(uri_components(http,'lodlaundromat.org','','','')).
 
-lle_version(collection, 11).
-lle_version(dissemination, 10).
+
+lle_version(10).
 

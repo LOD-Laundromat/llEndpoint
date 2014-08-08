@@ -37,7 +37,7 @@ ll_infobox(Request):-
 
 ll_infobox_with_cors(Request):-
   request_search_read(Request, md5, Md5), !,
-  lle_graph(dissemination, Graph),
+  lle_graph(Graph),
   aggregate_all(
     set([P,O]),
     (
