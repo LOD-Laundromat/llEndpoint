@@ -34,7 +34,7 @@ basket(Request):-
     catch(
       http_parameters(
         Request,
-        [url(Url,[]),version(Version,[positive_integer])]
+        [url(Url,[atom]),version(Version,[nonneg])]
       ),
       _,
       fail
@@ -43,7 +43,7 @@ basket(Request):-
   ->
     % Make sure that it is a URL.
     add_to_basket(Version, Url),
-    
+
     % HTTP status code 202 Accepted: The request has been accepted
     % for processing, but the processing has not been completed.
     reply_json(json{}, [status(202)])

@@ -71,13 +71,13 @@ rdf_tabular(Request):-
 
 % LOD Washing Machine endpoint.
 
-:- use_module(lle_deb(lwm_web_deb)).
-:- http_handler(root(lwm), lwm_web_deb, [id(lwm)]).
+:- use_module(lle_deb(lwm_deb)).
+:- http_handler(root(lwm), lwm_deb, [id(lwm)]).
 
 :- dynamic(user:web_module/2).
 :- multifile(user:web_module/2).
-   user:web_module('LOD Washing Machine', lwm_web_deb).
+   user:web_module('LOD Washing Machine', lwm_deb).
 
-lwm_web_deb(Request):-
-  lwm_web_deb(Request, plServer_style).
+lwm_deb(Request):-
+  lwm_deb(Request, plServer_style).
 

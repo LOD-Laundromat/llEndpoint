@@ -1,4 +1,9 @@
-:- module(schema, []).
+:- module(
+  schema,
+  [
+    init_schema/1 % +Graph:atom
+  ]
+).
 
 /** <module> LOD Washing Machine: schema
 
@@ -16,23 +21,9 @@ Generates the schema file for the LOD Washing Machine.
 
 :- use_module(lle(lle_settings)).
 
-:- initialization(assert_schema).
 
 
-
-%! assert_schema is det.
-
-assert_schema:-
-  lle_graph(Graph),
-  assert_schema0(Graph).
-
-%! assert_schema(+Version:positive_integer) is det.
-
-assert_schema(Version):-
-  lle_graph(Version, Graph),
-  assert_schema0(Graph).
-
-assert_schema0(Graph):-
+assert_schema(Graph):-
   % ArchiveEntry and URL partition the space of data documents.
   % Some data documents are in Archive.
 
@@ -408,4 +399,10 @@ assert_schema0(Graph):-
      the data document.',
     Graph
   ).
+
+
+init_schema(Graph):-
+  rdf_graph(Graph), !.
+init_schema(Graph):-
+  assert_schema(Graph).
 

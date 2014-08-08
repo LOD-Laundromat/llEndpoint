@@ -51,8 +51,8 @@ user:body(plTabular, Body) -->
 
 % LOD Washing Machine endpoint.
 :- use_module(lle_deb(lwm_web_deb)).
-:- http_handler(cliopatria(lwm), lwm_web_deb, [id(lwm)]).
+:- http_handler(cliopatria(lwm), lwm_deb, [id(lwm)]).
 
-lwm_web_deb(Request):-
-  lwm_web_deb(Request, cliopatria(default)).
+lwm_deb(Request):-
+  lwm_deb(Request, cliopatria(default)).
 

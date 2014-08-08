@@ -17,11 +17,13 @@ authority="localhost:3020"
 
 path="/basket"
 
+version="11"
+
 # The input file with one URL per line.
 input=url.data
 
 while read line; do
-  command="curl --data \"url=${line}\" ${scheme}://${authority}${path}";
+  command="curl --data \"url=${line}&version=${version}\" ${scheme}://${authority}${path}";
   eval $command;
   # For debugging purposes, the command can be written to standard output.
   ####echo $command;

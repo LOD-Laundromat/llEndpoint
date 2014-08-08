@@ -1,7 +1,7 @@
 :- module(
   lwm_web_deb,
   [
-    lwm_web_deb/2, % +Request:list
+    lwm_deb/2, % +Request:list
                    % +HtmlStyle:atom
     serve_files_in_directory_with_cors/2 % +Alias:atom
                                          % +Request:list(nvpair)
@@ -43,29 +43,20 @@ serve_files_in_directory_with_cors(Alias, Request):-
   serve_files_in_directory(Alias, Request).
 
 
-lwm_web_deb(_, HtmlStyle):-
+lwm_deb(_, HtmlStyle):-
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
     html([
       h1('Overview of dissemination version'),
-      \lwm_web_deb_mode
+      \lwm_deb_version(11)
     ])
   ).
 
-%! lwm_web_deb_mode// is det.
+%! lwm_deb_version(+Version:positive_integer)// is det.
 
-lwm_web_deb_mode -->
-  {lle_graph(Graph)},
-  lwm_web_deb0(Graph).
-
-%! lwm_web_deb_mode(+Version:positive_integer)// is det.
-
-lwm_web_deb(Version) -->
+lwm_deb_version(Version) -->
   {lle_graph(Version, Graph)},
-  lwm_web_deb0(Graph).
-
-lwm_web_deb0(Graph) -->
   pending(Graph),
   unpacking(Graph),
   unpacked(Graph),
