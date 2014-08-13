@@ -187,6 +187,27 @@ cleaned(Graph) -->
     ]
   ).
 
+lwm_status_table(Graph, Status, Datadocs1) -->
+  {
+    sort(Datadocs1, Datadocs2),
+    maplist(datadoc_to_row(Graph), Datadocs2, Rows),
+    length(Datadocs2, Length)
+  },
+  rdf_html_table(
+    html([
+      \html_pl_term(lwm,Length),
+      ' data documents with status ',
+      \html_pl_term(lwm,Status)
+    ]),
+    [['Datadoc','URL','Path']|Rows],
+    [graph(Graph),header_row(true)]
+  ).
+
+lwm_status_tables(_, []) --> [].
+lwm_status_tables(Graph, [Status-Datadocs|T]) -->
+  lwm_status_table(Graph, Status, Datadocs),
+  lwm_status_tables(Graph, T).
+
 lwm_status_terms(Graph) -->
   {
     findall(
@@ -202,29 +223,25 @@ lwm_status_terms(Graph) -->
   },
   lwm_status_tables(Graph, Pairs3).
 
-lwm_status_tables(_, []) --> [].
-lwm_status_tables(Graph, [Status-Datadocs|T]) -->
-  lwm_status_table(Graph, Status, Datadocs),
-  lwm_status_tables(Graph, T).
 
-lwm_status_table(Graph, Status, Datadocs1) -->
-  {
-    sort(Datadocs1, Datadocs2),
-    maplist(datadoc_to_row(Graph), Datadocs2, Rows),
-    length(Datadocs2, Length)
-  },
-  rdf_html_table(
-    html([
-      \html_pl_term(lwm,Length),
-      ' data documents with status ',
-      \html_pl_term(lwm,Status)
-    ]),
-    [['Datadoc','Dirty URL']|Rows],
-    [graph(Graph),header_row(true)]
-  ).
+%! datadoc_source(+Graph:atom, +Datadoc:iri, -Source:list) is det.
 
-datadoc_to_row(Graph, Datadoc, [Datadoc,Url]):-
-  rdf(Datadoc, ll:url, Url, Graph).
+datadoc_source(Graph, Datadoc, [Url]):-
+  rdf(Datadoc, ll:url, Url, Graph), !.
+datadoc_source(Graph, Datadoc, [Path|T]):-
+  rdf(Datadoc, ll:path, literal(type(xsd:string,Path)), Graph),
+  rdf(Parentdoc, ll:contains_entry, Datadoc, Graph),
+  datadoc_source(Graph, Parentdoc, T).
+
+
+%! datadoc_to_row(+Graph:atom, +Datadoc:iri, -Row:list) is det.
+
+datadoc_to_row(Graph, Datadoc, [Datadoc,Url,Path]):-
+  datadoc_source(Graph, Datadoc, [Url|Paths]),
+  atomic_list_concat(Paths, '-', Path).
+
+
+%! status_to_atom(+Term, -Atom) is det.
 
 status_to_atom(literal(type(XsdString,Status1)), Status2):-
   rdf_equal(xsd:string, XsdString),
