@@ -236,7 +236,7 @@ status_to_atom0(exception(error(existence_error(directory,_),_)), existence_erro
 status_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
 status_to_atom0(exception(error(http_status(Status),_)), Label):-
   atomic_list_concat([http_status,Status], '_', Label).
-status_to_atom0(exception(error(instantiation_error,_)), instantiation_error).
+status_to_atom0(exception(error(instantiation_error(_),_)), instantiation_error).
 status_to_atom0(exception(error(io_error(Mode,_),_)), Label):-
   atomic_list_concat([io_error,Mode], '_', Label).
 status_to_atom0(exception(error(limit_exceeded(max_errors,_),_)), limit_exceeded_max_errors).
