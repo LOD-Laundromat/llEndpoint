@@ -16,10 +16,10 @@ Generates the schema file for the LOD Washing Machine.
 
 :- use_module(library(semweb/rdf_db)).
 
-:- use_module(plRdf(rdf_prefixes)). % Registrations.
+:- use_module(plRdf(rdf_prefixes)). % RDF prefix registrations.
 :- use_module(plRdf(rdfs_build2)).
 
-:- use_module(lle(lle_settings)).
+:- use_module(lle(lle_settings)). % RDF prefix registration.
 
 
 
@@ -76,6 +76,16 @@ assert_schema(Graph):-
     Graph
   ),
 
+  % Version.
+  rdfs_assert_class(
+    ll:'Version',
+    rdfs:'Class',
+    'LOD Washing Machine version',
+    'A version of the LOD Washing Machine \c
+     that is used to crawl the LOD cloud.',
+    Graph
+  ),
+
 
   % Added.
   rdfs_assert_property(
@@ -99,7 +109,7 @@ assert_schema(Graph):-
      An archive of type `dir` can be unpacked into archive entries.',
     Graph
   ),
-  
+
   % Archive format.
   rdfs_assert_property(
     ll:archive_format,
@@ -109,7 +119,7 @@ assert_schema(Graph):-
     'TODO',
     Graph
   ),
-  
+
   % Archive last modified.
   rdfs_assert_property(
     ll:archive_last_modified,
@@ -119,7 +129,7 @@ assert_schema(Graph):-
     'TODO',
     Graph
   ),
-  
+
   % Archive size.
   rdfs_assert_property(
     ll:archive_size,
@@ -190,7 +200,7 @@ assert_schema(Graph):-
      the factum.',
     Graph
   ),
-  
+
   % Duplicates.
   rdfs_assert_property(
     ll:duplicates,
@@ -201,13 +211,13 @@ assert_schema(Graph):-
      in the same dirty data document.',
     Graph
   ),
-  
+
   % End cleaning.
   rdfs_assert_property(
     ll:end_clean,
     dcat:'Distribution',
     xsd:dateTime,
-    'end cleaning',
+    'end cleaning a data document',
     'The date and time at which the process of cleaning the data document \c
      ended.',
     Graph
@@ -218,7 +228,7 @@ assert_schema(Graph):-
     ll:end_unpack,
     dcat:'Distribution',
     xsd:dateTime,
-    'end unpacking',
+    'end unpacking a data document',
     'The date and time at which the process of downloading and unpacking \c
      the data document ended.',
     Graph
@@ -275,7 +285,7 @@ assert_schema(Graph):-
      the data document.',
     Graph
   ),
-  
+
   % MD5.
   rdfs_assert_property(
     ll:md5,
@@ -289,7 +299,7 @@ assert_schema(Graph):-
      and (2) its entry path within that archive.',
     Graph
   ),
-  
+
   % Path.
   rdfs_assert_property(
     ll:path,
@@ -316,7 +326,7 @@ assert_schema(Graph):-
      RDFa, Turtle, TriG.',
     Graph
   ),
-  
+
   % Size.
   rdfs_assert_property(
     ll:size,
@@ -328,13 +338,24 @@ assert_schema(Graph):-
      Availability: Any data document that can be downloaded/unpacked.',
     Graph
   ),
-  
+
+  % Start.
+  rdfs_assert_property(
+    ll:start,
+    ll:'Version',
+    xsd:dateTime,
+    'start processing the LOD cloud',
+    'The date and time at which the processing \c
+     of the entire LOD cloud started.',
+    Graph
+  ),
+
   % Start cleaning.
   rdfs_assert_property(
     ll:start_clean,
     dcat:'Distribution',
     xsd:dateTime,
-    'start cleaning',
+    'start cleaning a data document',
     'The date and time at which the process of cleaning the data document \c
      started.',
     Graph
@@ -345,7 +366,7 @@ assert_schema(Graph):-
     ll:start_unpack,
     dcat:'Distribution',
     xsd:dateTime,
-    'start unpacking',
+    'start unpacking a data document',
     'The date and time at which the process of downloading and unpacking \c
      the data document started.',
     Graph
@@ -385,7 +406,7 @@ assert_schema(Graph):-
      the data document.',
     Graph
   ),
-  
+
   % Warning.
   rdfs_assert_property(
     ll:warning,

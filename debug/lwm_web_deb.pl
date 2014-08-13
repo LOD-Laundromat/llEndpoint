@@ -1,14 +1,13 @@
 :- module(
   lwm_web_deb,
   [
-    lwm_deb/2, % +Request:list
-                   % +HtmlStyle:atom
-    serve_files_in_directory_with_cors/2 % +Alias:atom
-                                         % +Request:list(nvpair)
+    lwm_deb/2 % +Request:list
+              % +HtmlStyle:atom
+
   ]
 ).
 
-/** <module> LOD laundry overview
+/** <module> LOD laundry: Washing Machine debug tool
 
 Overview of the processing of the LOD Washing Machine,
 intended for debugging purposes.
@@ -18,13 +17,8 @@ intended for debugging purposes.
 */
 
 :- use_module(library(http/html_write)).
-:- use_module(library(http/http_cors)).
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/http_server_files)).
 :- use_module(library(http/http_session)). % HTTP session support.
 :- use_module(library(semweb/rdf_db)).
-
-:- use_module(generics(typecheck)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -39,24 +33,21 @@ intended for debugging purposes.
 
 
 
-serve_files_in_directory_with_cors(Alias, Request):-
-  cors_enable,
-  serve_files_in_directory(Alias, Request).
-
-
 lwm_deb(_, HtmlStyle):-
-  Version = 11,
-  lle_graph(Version, Graph),
+  lwm_deb_version(VersionNumber),
+  lle_version_object(VersionNumber, Version),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
     html([
       h1('Overview of dissemination version'),
-      \lwm_deb_version(Graph),
+      \lwm_deb_version(Version),
       h1('Overview of LWM exceptions'),
-      \lwm_exception_terms(Graph)
+      \lwm_exception_terms(Version)
     ])
   ).
+
+lwm_deb_version(11).
 
 %! lwm_deb_version(+Graph:atom)// is det.
 
