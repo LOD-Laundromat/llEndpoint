@@ -53,8 +53,8 @@ lwm_deb(_, HtmlStyle):-
     html([
       h1('Overview of dissemination version'),
       \lwm_deb_version(Graph),
-      h1('Overview of LWM status terms'),
-      \lwm_status_terms(Graph)
+      h1('Overview of LWM exceptions'),
+      \lwm_exception_terms(Graph)
     ])
   ).
 
@@ -187,7 +187,7 @@ cleaned(Graph) -->
     ]
   ).
 
-lwm_status_table(Graph, Status, Datadocs1) -->
+lwm_exception_table(Graph, Exception, Datadocs1) -->
   {
     sort(Datadocs1, Datadocs2),
     maplist(datadoc_to_row(Graph), Datadocs2, Rows),
@@ -196,32 +196,32 @@ lwm_status_table(Graph, Status, Datadocs1) -->
   rdf_html_table(
     html([
       \html_pl_term(lwm,Length),
-      ' data documents with status ',
-      \html_pl_term(lwm,Status)
+      ' data documents with exception ',
+      \html_pl_term(lwm,Exception)
     ]),
     [['Datadoc','URL','Path']|Rows],
     [graph(Graph),header_row(true)]
   ).
 
-lwm_status_tables(_, []) --> [].
-lwm_status_tables(Graph, [Status-Datadocs|T]) -->
-  lwm_status_table(Graph, Status, Datadocs),
-  lwm_status_tables(Graph, T).
+lwm_exception_tables(_, []) --> [].
+lwm_exception_tables(Graph, [Exception-Datadocs|T]) -->
+  lwm_exception_table(Graph, Exception, Datadocs),
+  lwm_exception_tables(Graph, T).
 
-lwm_status_terms(Graph) -->
+lwm_exception_terms(Graph) -->
   {
     findall(
-      Status2-Datadoc,
+      Exception2-Datadoc,
       (
-        rdf(Datadoc, ll:status, Status1, Graph),
-        status_to_atom(Status1, Status2)
+        rdf(Datadoc, ll:exception, Exception1, Graph),
+        exception_to_atom(Exception1, Exception2)
       ),
       Pairs1
     ),
     keysort(Pairs1, Pairs2),
     group_pairs_by_key(Pairs2, Pairs3)
   },
-  lwm_status_tables(Graph, Pairs3).
+  lwm_exception_tables(Graph, Pairs3).
 
 
 %! datadoc_source(+Graph:atom, +Datadoc:iri, -Source:list) is det.
@@ -241,29 +241,29 @@ datadoc_to_row(Graph, Datadoc, [Datadoc,Url,Path]):-
   atomic_list_concat(Paths, '-', Path).
 
 
-%! status_to_atom(+Term, -Atom) is det.
+%! exception_to_atom(+Exception, -Atom) is det.
 
-status_to_atom(literal(type(XsdString,Status1)), Status2):-
+exception_to_atom(literal(type(XsdString,Status1)), Status2):-
   rdf_equal(xsd:string, XsdString),
   read_term_from_atom(Status1, StatusTerm, []),
-  once(status_to_atom0(StatusTerm, Status2)), !.
-status_to_atom(Status, Status).
+  once(exception_to_atom0(StatusTerm, Status2)), !.
+exception_to_atom(Status, Status).
 
-status_to_atom0(exception(error(existence_error(directory,_),_)), existence_error_directory).
-status_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
-status_to_atom0(exception(error(http_status(Status),_)), Label):-
+exception_to_atom0(exception(error(existence_error(directory,_),_)), existence_error_directory).
+exception_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
+exception_to_atom0(exception(error(http_status(Status),_)), Label):-
   atomic_list_concat([http_status,Status], '_', Label).
-status_to_atom0(exception(error(instantiation_error(_),_)), instantiation_error).
-status_to_atom0(exception(error(io_error(Mode,_),_)), Label):-
+exception_to_atom0(exception(error(instantiation_error(_),_)), instantiation_error).
+exception_to_atom0(exception(error(io_error(Mode,_),_)), Label):-
   atomic_list_concat([io_error,Mode], '_', Label).
-status_to_atom0(exception(error(limit_exceeded(max_errors,_),_)), limit_exceeded_max_errors).
-status_to_atom0(exception(error(no_rdf(_))), no_rdf).
-status_to_atom0(exception(error(socket_error(_),_)), socket_error).
-status_to_atom0(exception(error(ssl_error(Kind),_)), Label):-
+exception_to_atom0(exception(error(limit_exceeded(max_errors,_),_)), limit_exceeded_max_errors).
+exception_to_atom0(exception(error(no_rdf(_))), no_rdf).
+exception_to_atom0(exception(error(socket_error(_),_)), socket_error).
+exception_to_atom0(exception(error(ssl_error(Kind),_)), Label):-
   atomic_list_concat([ssl_error,Kind], '_', Label).
-status_to_atom0(exception(error(timeout_error(Mode,_),_)), Label):-
+exception_to_atom0(exception(error(timeout_error(Mode,_),_)), Label):-
   atomic_list_concat([timeout_error,Mode], '_', Label).
-status_to_atom0(exception(error(type_error(xml_dom,_),_)), type_error_xml_dom).
-status_to_atom0(false, false).
-status_to_atom0(true, true).
+exception_to_atom0(exception(error(type_error(xml_dom,_),_)), type_error_xml_dom).
+exception_to_atom0(false, false).
+exception_to_atom0(true, true).
 

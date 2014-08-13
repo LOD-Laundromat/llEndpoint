@@ -224,6 +224,20 @@ assert_schema(Graph):-
     Graph
   ),
 
+  % Exception.
+  rdfs_assert_property(
+    ll:exception,
+    dcat:'Distribution',
+    xsd:string,
+    status,
+    'A blockig exception that occured somewhere during the unpacking \c
+     and/or cleaning process. Possible values: \c
+     (1) fail, failed to unpack/clean due to an unanticipated reason. \c
+     (2) true, successfully unpacked and cleaned data document. \c
+     (3) exception, failed to unpack/clean due to an anticipated reason.',
+    Graph
+  ),
+
   % File extension.
   rdfs_assert_property(
     ll:file_extension,
@@ -273,20 +287,6 @@ assert_schema(Graph):-
      of the data document. The source of a data document is either its URL,
      or the pair of (1) the source of the archive from which it was derived,
      and (2) its entry path within that archive.',
-    Graph
-  ),
-  
-  % Message.
-  rdfs_assert_property(
-    ll:message,
-    dcat:'Distribution',
-    xsd:string,
-    message,
-    'A non-blocking warning message that is either emitted \c
-     while downloading, unpacking, or cleaning a dirty data document.\n\c
-     Possible values: (1) TODO \c
-       (1) Syntax error while parsing RDF file. \c
-       (2) No RDF in file.',
     Graph
   ),
   
@@ -351,20 +351,6 @@ assert_schema(Graph):-
     Graph
   ),
 
-  % Status.
-  rdfs_assert_property(
-    ll:status,
-    dcat:'Distribution',
-    xsd:string,
-    status,
-    'The status of the entire unpacking and/or cleaning process. \c
-     Possible values: \c
-     (1) fail, failed to unpack/clean due to an unanticipated reason. \c
-     (2) true, successfully unpacked and cleaned data document. \c
-     (3) exception, failed to unpack/clean due to an anticipated reason.',
-    Graph
-  ),
-
   % Triples.
   rdfs_assert_property(
     ll:triples,
@@ -397,6 +383,20 @@ assert_schema(Graph):-
     version,
     'The version of the LOD Washing Machine that was used for cleaning \c
      the data document.',
+    Graph
+  ),
+  
+  % Warning.
+  rdfs_assert_property(
+    ll:warning,
+    dcat:'Distribution',
+    xsd:string,
+    message,
+    'A non-blocking warning message that is either emitted \c
+     while downloading, unpacking, or cleaning a dirty data document.\n\c
+     Possible values: (1) TODO \c
+       (1) Syntax error while parsing RDF file. \c
+       (2) No RDF in file.',
     Graph
   ).
 
