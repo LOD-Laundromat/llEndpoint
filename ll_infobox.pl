@@ -37,12 +37,12 @@ ll_infobox(Request):-
 
 ll_infobox_with_cors(Request):-
   request_search_read(Request, md5, Md5), !,
-  lle_version_object(Version),
+  lle_version_graph(Graph),
   aggregate_all(
     set([P,O]),
     (
-      rdf_string(Datadoc, ll:md5, Md5, Version),
-      rdf(Datadoc, P, O, Version)
+      rdf_string(Datadoc, ll:md5, Md5, Graph),
+      rdf(Datadoc, P, O, Graph)
     ),
     Rows
   ),
@@ -51,7 +51,7 @@ ll_infobox_with_cors(Request):-
       \rdf_html_table(
         _NoCaption,
         Rows,
-        [graph(Version),header_row(po)]
+        [graph(Graph),header_row(po)]
       )
     ),
     Tokens

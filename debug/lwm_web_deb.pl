@@ -34,16 +34,16 @@ intended for debugging purposes.
 
 
 lwm_deb(_, HtmlStyle):-
-  lwm_deb_version(VersionNumber),
-  lle_version_object(VersionNumber, Version),
+  lwm_deb_version(Version),
+  lle_version_graph(Version, Graph),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
     html([
       h1('Overview of dissemination version'),
-      \lwm_deb_version(Version),
+      \lwm_deb_version(Graph),
       h1('Overview of LWM exceptions'),
-      \lwm_exception_terms(Version)
+      \lwm_exception_terms(Graph)
     ])
   ).
 

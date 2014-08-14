@@ -14,7 +14,10 @@
 
 % #1: Serves clean data documents.
 :- use_module(lle(lle_data)).
-:- http_handler(cliopatria(data), clean_data, []).
+%:- dynamic(http:location/3).
+%:- multifile(http:location/3).
+%   http:location(lle_data, root(data), []).
+:- http_handler(root(data), clean_data, []).
 
 
 % Load the LOD Laundromat schema.

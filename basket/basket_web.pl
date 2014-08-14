@@ -72,16 +72,16 @@ add_to_basket(Version, Url1):-
   )).
 
 
-%! store_url(+VersionNumber:positive_integer, +Md5:atom, +Url:url) is det.
+%! store_url(+Version:positive_integer, +Md5:atom, +Url:url) is det.
 
-store_url(VersionNumber, Md5, Url):-
-  lle_version_object(VersionNumber, Version),
+store_url(Version, Md5, Url):-
+  lle_version_graph(Version, Graph),
   rdf_global_id(ll:Md5, Datadoc),
-  rdf_assert(Datadoc, rdf:type, ll:'URL', Version),
-  rdf_assert(Datadoc, ll:md5, literal(type(xsd:string,Md5)), Version),
-  rdf_assert(Datadoc, ll:url, Url, Version),
+  rdf_assert(Datadoc, rdf:type, ll:'URL', Graph),
+  rdf_assert(Datadoc, ll:md5, literal(type(xsd:string,Md5)), Graph),
+  rdf_assert(Datadoc, ll:url, Url, Graph),
   get_dateTime(Added),
-  rdf_assert(Datadoc, ll:added, literal(type(xsd:dateTime,Added)), Version).
+  rdf_assert(Datadoc, ll:added, literal(type(xsd:dateTime,Added)), Graph).
 
 
 

@@ -23,14 +23,20 @@ Serving of data cleaned by the LOD Washing Machine.
 
 :- use_module(lle(lle_settings)).
 
-:- dynamic(http:location/3).
-:- multifile(http:location/3).
-   http:location(lle_data, root(data), []).
-
 
 
 clean_data(Request):-
+gtrace,
+  % Kind.
+  (
+    request_search_read(Request, kind, Kind), !
+  ;
+    Kind = clean
+  ),
+  
+  % MD5.
   request_search_read(Request, md5, Md5),
-  lle_clean_file(Md5, File),
-  http_reply_file(File, [], Request).
+  
+  lle_data_file(Md5, Kind, DataFile),
+  http_reply_file(DataFile, [], Request).
 
