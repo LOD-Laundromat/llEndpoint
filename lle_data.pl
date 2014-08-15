@@ -27,16 +27,24 @@ Serving of data cleaned by the LOD Washing Machine.
 
 clean_data(Request):-
 gtrace,
-  % Kind.
-  (
-    request_search_read(Request, kind, Kind), !
-  ;
-    Kind = clean
-  ),
-  
-  % MD5.
-  request_search_read(Request, md5, Md5),
-  
-  lle_data_file(Md5, Kind, DataFile),
-  http_reply_file(DataFile, [], Request).
+  data_md5(Request, Md5),
+  data_kind(Request, Kind),
+  lle_data_file(Md5, Kind, File),
+  http_reply_file(File, [], Request).
 
+
+
+%! data_kind(+Request:list(nvpair), -Kind:oneof([clean,dirty])) is det.
+
+data_kind(Request, Kind):-
+  request_search_read(Request, kind, Kind), !.
+data_kind(_, clean).
+
+
+%! data_md5(+Request:list(nvpair), -Md5:atom) is det.
+
+data_md5(Request, Md5):-
+  memberchk(path(Path), Request),
+  atomic_list_concat(['',data,Md5], '/', Path), !.
+data_md5(Request, Md5):-
+  request_search_read(Request, md5, Md5).
