@@ -76,17 +76,6 @@ assert_schema(Graph):-
     Graph
   ),
 
-  % Version.
-  rdfs_assert_class(
-    ll:'Version',
-    rdfs:'Class',
-    'LOD Washing Machine version',
-    'A version of the LOD Washing Machine \c
-     that is used to crawl the LOD cloud.',
-    Graph
-  ),
-
-
   % Added.
   rdfs_assert_property(
     ll:added,
@@ -339,17 +328,6 @@ assert_schema(Graph):-
     Graph
   ),
 
-  % Start.
-  rdfs_assert_property(
-    ll:start,
-    ll:'Version',
-    xsd:dateTime,
-    'start processing the LOD cloud',
-    'The date and time at which the processing \c
-     of the entire LOD cloud started.',
-    Graph
-  ),
-
   % Start cleaning.
   rdfs_assert_property(
     ll:start_clean,
@@ -395,18 +373,7 @@ assert_schema(Graph):-
      was downloaded.',
     Graph
   ),
-
-  % Version.
-  rdfs_assert_property(
-    ll:version,
-    dcat:'Distribution',
-    xsd:integer,
-    version,
-    'The version of the LOD Washing Machine that was used for cleaning \c
-     the data document.',
-    Graph
-  ),
-
+  
   % Warning.
   rdfs_assert_property(
     ll:warning,
