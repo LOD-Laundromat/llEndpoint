@@ -12,6 +12,7 @@
     plDcg,
     plGraph,
     plHtml,
+    plXsd,
     plRdf,
     plServer,
     plTabular
