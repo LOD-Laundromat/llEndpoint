@@ -17,6 +17,7 @@ by the LOD Washing Machine.
 
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
+:- use_module(library(lists)).
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
 
@@ -85,7 +86,11 @@ lwm_exception_tables(Graph, [Exception-Datadocs|T]) -->
 
 datadoc_source(Graph, Datadoc, [Url]):-
   rdf(Datadoc, ll:url, Url, Graph), !.
-datadoc_source(Graph, Datadoc, [Path|T]):-
+datadoc_source(Graph, Datadoc, Source):-
+  datadoc_source0(Graph, Datadoc, Source0),
+  reverse(Source0, Source).
+
+datadoc_source0(Graph, Datadoc, [Path|T]):-
   rdf(Datadoc, ll:path, literal(type(xsd:string,Path)), Graph),
   rdf(Parentdoc, ll:contains_entry, Datadoc, Graph),
   datadoc_source(Graph, Parentdoc, T).
