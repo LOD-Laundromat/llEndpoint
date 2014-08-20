@@ -52,8 +52,13 @@ rdf_tabular(Request):-
 
 
 % #5: LOD Washing Machine debug endpoint.
-:- use_module(lle_deb(lwm_web_deb)).
-:- http_handler(cliopatria(lwm), lwm_deb, [id(lwm)]).
+:- use_module(lle_deb(lwm_deb)).
+
+:- dynamic(http:location/3).
+:- multifile(http:location/3).
+   http:location(lwm_deb, cliopatria(deb), []). 
+
+:- http_handler(lwm_deb(.), lwm_deb, [id(lwm),prefix,priority(-1)]).
 
 lwm_deb(Request):-
   lwm_deb(Request, lle).

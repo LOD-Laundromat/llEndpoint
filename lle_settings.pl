@@ -10,7 +10,8 @@
     lle_version_graph/1, % -Graph:iri
     lle_version_graph/2, % +Version:positive_integer
                          % -Graph:iri
-    lle_version_number/1 % -Version:positive_integer
+    lle_version/1, % -Version:positive_integer
+    lwm_debug_version/1 % -Version:positive_integer
   ]
 ).
 
@@ -37,7 +38,7 @@ Settings for operating the LOD Laundromat endpoint.
 %! ) is det.
 
 lle_data_file(Md5, Kind, Spec):-
-  lle_version_number(Version),
+  lle_version(Version),
   lle_datadoc_directory(Md5, Md5Dir),
   lle_data_file_exists(Md5Dir, Kind, Name),
   atomic_list_concat([Version,Md5,Name], '/', RelativePath),
@@ -70,7 +71,7 @@ lle_version_directory(VersionDir):-
   absolute_file_name(data(.), DataDir, [access(write),file_type(directory)]),
 
   % Add the LOD Washing Machine version to the directory path.
-  lle_version_number(Version1),
+  lle_version(Version1),
   atom_number(Version2, Version1),
   directory_file_path(DataDir, Version2, VersionDir),
   make_directory_path(VersionDir).
@@ -79,7 +80,7 @@ lle_version_directory(VersionDir):-
 %! lle_version_graph(-Graph:iri) is det.
 
 lle_version_graph(Graph):-
-  lle_version_number(Version),
+  lle_version(Version),
   lle_version_graph(Version, Graph).
 
 %! lle_version_graph(+Version:positive_integer, -Graph:iri) is det.
@@ -90,8 +91,12 @@ lle_version_graph(Version, Graph):-
   uri_components(Graph, uri_components(Scheme,Authority,_,_,Fragment)).
 
 
-%! lle_version_number(+Version:positive_integer) is semidet.
-%! lle_version_number(-Version:positive_integer) is det.
+%! lle_version(+Version:positive_integer) is semidet.
+%! lle_version(-Version:positive_integer) is det.
 
-lle_version_number(11).
+lle_version(11).
+
+
+lwm_debug_version(11).
+
 
