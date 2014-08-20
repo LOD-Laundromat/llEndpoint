@@ -27,13 +27,14 @@ intended for debugging purposes.
 lwm_deb(_, HtmlStyle):-
   reply_html_page(
     HtmlStyle,
-    title('LOD Laundromat - Washing Machine Debug Tool'),
-    html(
+    title('LOD Laundromat - LOD Washing Machine debug tools'),
+    html([
+      'LOD Washing Machine debug tools:',
       \html_list(
         [lwm_deb_exceptions,lwm_deb_progress],
         html_http_handler,
         [ordered(false)]
       )
-    )
+    ])
   ).
 
