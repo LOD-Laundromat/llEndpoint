@@ -106,6 +106,7 @@ exception_to_atom(literal(type(XsdString,Status1)), Status2):-
   once(exception_to_atom0(StatusTerm, Status2)), !.
 exception_to_atom(Status, Status).
 
+exception_to_atom0(exception(error(permission_error(redirect,_,_),_)), permission_error(rediction_loop)).
 exception_to_atom0(exception(error(existence_error(directory,_),_)), existence_error_directory).
 exception_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
 exception_to_atom0(exception(error(http_status(Status),_)), Label):-
