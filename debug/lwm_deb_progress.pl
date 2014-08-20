@@ -51,33 +51,29 @@ lwm_deb_progress(Request, HtmlStyle):-
 %! pending_table(+Graph:atom)// is det.
 
 pending_table(Graph) -->
-  {
-    findall(
-      Added-[Datadoc,Added],
-      (
-        rdf(Datadoc, ll:added, Added, Graph),
-        \+ rdf(Datadoc, ll:start_unpack, _, Graph)
-      ),
-      Pairs
-    )
-  },
+  {findall(
+    Added-[Datadoc,Added],
+    (
+      rdf(Datadoc, ll:added, Added, Graph),
+      \+ rdf(Datadoc, ll:start_unpack, _, Graph)
+    ),
+    Pairs
+  )},
   progress_table(' pending data documents.', 'Added', Pairs).
 
 
 %! unpacking_table(+Graph:atom)// is det.
 
 unpacking_table(Graph) -->
-  {
-    findall(
-      StartUnpack2-[Datadoc,StartUnpack1],
-      (
-        rdf(Datadoc, ll:start_unpack, StartUnpack1, Graph),
-        \+ rdf(Datadoc, ll:end_unpack, _, Graph),
-        rdf_literal(StartUnpack1, StartUnpack2, _)
-      ),
-      Pairs
-    )
-  },
+  {findall(
+    StartUnpack2-[Datadoc,StartUnpack1],
+    (
+      rdf(Datadoc, ll:start_unpack, StartUnpack1, Graph),
+      \+ rdf(Datadoc, ll:end_unpack, _, Graph),
+    rdf_literal(StartUnpack1, StartUnpack2, _)
+    ),
+    Pairs
+  )},
   progress_table(
     ' data documents are being unpacked.',
     'Unpacking start',
@@ -88,16 +84,14 @@ unpacking_table(Graph) -->
 %! unpacked_table(+Graph:atom)// is det.
 
 unpacked_table(Graph) -->
-  {
-    findall(
-      EndUnpack-[Datadoc,EndUnpack],
-      (
-        rdf(Datadoc, ll:end_unpack, EndUnpack, Graph),
-        \+ rdf(Datadoc, ll:start_clean, _, Graph)
-      ),
-      Pairs
-    )
-  },
+  {findall(
+    EndUnpack-[Datadoc,EndUnpack],
+    (
+      rdf(Datadoc, ll:end_unpack, EndUnpack, Graph),
+      \+ rdf(Datadoc, ll:start_clean, _, Graph)
+    ),
+    Pairs
+  )},
   progress_table(' unpacked data documents.', 'Unpacking end', Pairs).
 
 
