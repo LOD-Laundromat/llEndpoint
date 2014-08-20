@@ -70,7 +70,7 @@ unpacking_table(Graph) -->
     (
       rdf(Datadoc, ll:start_unpack, StartUnpack1, Graph),
       \+ rdf(Datadoc, ll:end_unpack, _, Graph),
-    rdf_literal(StartUnpack1, StartUnpack2, _)
+      rdf_literal(StartUnpack1, StartUnpack2, _)
     ),
     Pairs
   )},
