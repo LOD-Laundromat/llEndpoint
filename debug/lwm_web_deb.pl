@@ -191,7 +191,7 @@ lwm_exception_table(Graph, Exception, Datadocs1) -->
       \html_pl_term(lwm,Exception)
     ]),
     [['Datadoc','URL','Path']|Rows],
-    [graph(Graph),header_row(true)]
+    [graph(Graph),header_row(true),maximum_number_of_rows(10)]
   ).
 
 lwm_exception_tables(_, []) --> [].
