@@ -42,7 +42,7 @@ ll_infobox_with_cors(Request):-
   aggregate_all(
     set([P,O]),
     (
-      rdf_string(Datadoc, ll:md5, Md5, Graph),
+      rdf_string(Datadoc, llo:md5, Md5, Graph),
       rdf(Datadoc, P, O, Graph)
     ),
     Rows

@@ -50,7 +50,7 @@ lwm_deb_exceptions(Graph) -->
     findall(
       Exception2-Datadoc,
       (
-        rdf(Datadoc, ll:exception, Exception1, Graph),
+        rdf(Datadoc, llo:exception, Exception1, Graph),
         exception_to_atom(Exception1, Exception2)
       ),
       Pairs1
@@ -86,14 +86,14 @@ lwm_exception_tables(Graph, [Exception-Datadocs|T]) -->
 %! datadoc_source(+Graph:atom, +Datadoc:iri, -Source:list) is det.
 
 datadoc_source(Graph, Datadoc, [Url]):-
-  rdf(Datadoc, ll:url, Url, Graph), !.
+  rdf(Datadoc, llo:url, Url, Graph), !.
 datadoc_source(Graph, Datadoc, Source):-
   datadoc_source0(Graph, Datadoc, Source0),
   reverse(Source0, Source).
 
 datadoc_source0(Graph, Datadoc, [Path|T]):-
-  rdf(Datadoc, ll:path, literal(type(xsd:string,Path)), Graph),
-  rdf(Parentdoc, ll:contains_entry, Datadoc, Graph),
+  rdf(Datadoc, llo:path, literal(type(xsd:string,Path)), Graph),
+  rdf(Parentdoc, llo:contains_entry, Datadoc, Graph),
   datadoc_source(Graph, Parentdoc, T).
 
 

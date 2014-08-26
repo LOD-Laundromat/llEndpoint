@@ -34,7 +34,7 @@ assert_schema(Graph):-
 
   % Archive.
   rdfs_assert_class(
-    ll:'Archive',
+    llo:'Archive',
     dcat:'Distribution',
     'file archive',
     'The class of resources that denote \c
@@ -47,7 +47,7 @@ assert_schema(Graph):-
 
   % ArchiveEntry.
   rdfs_assert_class(
-    ll:'ArchiveEntry',
+    llo:'ArchiveEntry',
     dcat:'Distribution',
     'file archive entry',
     'The class of resource that denote \c
@@ -60,7 +60,7 @@ assert_schema(Graph):-
 
   % URL.
   rdfs_assert_class(
-    ll:'URL',
+    llo:'URL',
     dcat:'Distribution',
     'URL',
     'The class of resources denoting \c
@@ -78,7 +78,7 @@ assert_schema(Graph):-
 
   % Added.
   rdfs_assert_property(
-    ll:added,
+    llo:added,
     dcat:'Distribution',
     xsd:dateTime,
     added,
@@ -89,8 +89,8 @@ assert_schema(Graph):-
 
   % Archive file type
   rdfs_assert_property(
-    ll:archive_file_type,
-    ll:'Archive',
+    llo:archive_file_type,
+    llo:'Archive',
     xsd:string,
     'archive file type',
     'The high-level file type of an archive file.\n\c
@@ -101,8 +101,8 @@ assert_schema(Graph):-
 
   % Archive format.
   rdfs_assert_property(
-    ll:archive_format,
-    ll:'Archive',
+    llo:archive_format,
+    llo:'Archive',
     xsd:string,
     'archive format',
     'TODO',
@@ -111,8 +111,8 @@ assert_schema(Graph):-
 
   % Archive last modified.
   rdfs_assert_property(
-    ll:archive_last_modified,
-    ll:'Archive',
+    llo:archive_last_modified,
+    llo:'Archive',
     xsd:dateTime,
     'archive last modified',
     'TODO',
@@ -121,8 +121,8 @@ assert_schema(Graph):-
 
   % Archive size.
   rdfs_assert_property(
-    ll:archive_size,
-    ll:'Archive',
+    llo:archive_size,
+    llo:'Archive',
     xsd:integer,
     'archive size',
     'TODO',
@@ -131,7 +131,7 @@ assert_schema(Graph):-
 
   % Byte count.
   rdfs_assert_property(
-    ll:byte_count,
+    llo:byte_count,
     dcat:'Distribution',
     xsd:integer,
     'byte count',
@@ -142,7 +142,7 @@ assert_schema(Graph):-
 
   % Character count.
   rdfs_assert_property(
-    ll:character_count,
+    llo:character_count,
     dcat:'Distribution',
     xsd:integer,
     'character count',
@@ -153,9 +153,9 @@ assert_schema(Graph):-
 
   % Contains entry.
   rdfs_assert_property(
-    ll:contains_entry,
-    ll:'Archive',
-    ll:'ArchiveEntry',
+    llo:contains_entry,
+    llo:'Archive',
+    llo:'ArchiveEntry',
     'contains entry',
     'A link between a parent archive and one of its direct archive entries.',
     Graph
@@ -163,8 +163,8 @@ assert_schema(Graph):-
 
   % Content length.
   rdfs_assert_property(
-    ll:content_length,
-    ll:'URL',
+    llo:content_length,
+    llo:'URL',
     xsd:integer,
     'content length',
     'The number of bytes denoted in the Content-Length header \c
@@ -178,8 +178,8 @@ assert_schema(Graph):-
 
   % Content type.
   rdfs_assert_property(
-    ll:content_type,
-    ll:'URL',
+    llo:content_type,
+    llo:'URL',
     xsd:string,
     'content type',
     'The value of the Content-Type header of the HTTP reply message, \c
@@ -192,7 +192,7 @@ assert_schema(Graph):-
 
   % Duplicates.
   rdfs_assert_property(
-    ll:duplicates,
+    llo:duplicates,
     dcat:'Distribution',
     xsd:integer,
     'number of duplicate triples',
@@ -203,7 +203,7 @@ assert_schema(Graph):-
 
   % End cleaning.
   rdfs_assert_property(
-    ll:end_clean,
+    llo:end_clean,
     dcat:'Distribution',
     xsd:dateTime,
     'end cleaning a data document',
@@ -214,7 +214,7 @@ assert_schema(Graph):-
 
   % End unpacking.
   rdfs_assert_property(
-    ll:end_unpack,
+    llo:end_unpack,
     dcat:'Distribution',
     xsd:dateTime,
     'end unpacking a data document',
@@ -225,7 +225,7 @@ assert_schema(Graph):-
 
   % Exception.
   rdfs_assert_property(
-    ll:exception,
+    llo:exception,
     dcat:'Distribution',
     xsd:string,
     status,
@@ -239,7 +239,7 @@ assert_schema(Graph):-
 
   % File extension.
   rdfs_assert_property(
-    ll:file_extension,
+    llo:file_extension,
     dcat:'Distribution',
     xsd:string,
     'file extension',
@@ -251,8 +251,8 @@ assert_schema(Graph):-
 
   % Last modified.
   rdfs_assert_property(
-    ll:last_modified,
-    ll:'URL',
+    llo:last_modified,
+    llo:'URL',
     xsd:dateTime,
     'last modified',
     'The date and time denoted by the Last-Modified header of \c
@@ -266,7 +266,7 @@ assert_schema(Graph):-
 
   % Line count.
   rdfs_assert_property(
-    ll:line_count,
+    llo:line_count,
     dcat:'Distribution',
     xsd:integer,
     'line count',
@@ -277,7 +277,7 @@ assert_schema(Graph):-
 
   % MD5.
   rdfs_assert_property(
-    ll:md5,
+    llo:md5,
     dcat:'Distribution',
     xsd:string,
     'MD5',
@@ -291,7 +291,7 @@ assert_schema(Graph):-
 
   % Path.
   rdfs_assert_property(
-    ll:path,
+    llo:path,
     dcat:'ArchiveEntry',
     xsd:string,
     'file archive path',
@@ -302,7 +302,7 @@ assert_schema(Graph):-
 
   % Serialization format
   rdfs_assert_property(
-    ll:serialization_format,
+    llo:serialization_format,
     dcat:'Distribution',
     xsd:string,
     'serialization format',
@@ -318,7 +318,7 @@ assert_schema(Graph):-
 
   % Size.
   rdfs_assert_property(
-    ll:size,
+    llo:size,
     dcat:'Distribution',
     xsd:integer,
     'byte size',
@@ -330,7 +330,7 @@ assert_schema(Graph):-
 
   % Start cleaning.
   rdfs_assert_property(
-    ll:start_clean,
+    llo:start_clean,
     dcat:'Distribution',
     xsd:dateTime,
     'start cleaning a data document',
@@ -341,7 +341,7 @@ assert_schema(Graph):-
 
   % Start unpacking.
   rdfs_assert_property(
-    ll:start_unpack,
+    llo:start_unpack,
     dcat:'Distribution',
     xsd:dateTime,
     'start unpacking a data document',
@@ -352,7 +352,7 @@ assert_schema(Graph):-
 
   % Triples.
   rdfs_assert_property(
-    ll:triples,
+    llo:triples,
     dcat:'Distribution',
     xsd:integer,
     triples,
@@ -365,8 +365,8 @@ assert_schema(Graph):-
 
   % URL.
   rdfs_assert_property(
-    ll:url,
-    ll:'URL',
+    llo:url,
+    llo:'URL',
     rdfs:'Resource',
     'URL',
     'The URL from which the original version of the data document \c
@@ -376,7 +376,7 @@ assert_schema(Graph):-
   
   % Warning.
   rdfs_assert_property(
-    ll:warning,
+    llo:warning,
     dcat:'Distribution',
     xsd:string,
     message,

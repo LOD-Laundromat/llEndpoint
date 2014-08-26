@@ -27,7 +27,8 @@ Settings for operating the LOD Laundromat endpoint.
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 
-:- rdf_register_prefix(ll, 'http://lodlaundromat.org/vocab#').
+:- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
+:- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
 
 
 

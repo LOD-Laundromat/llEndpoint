@@ -63,8 +63,8 @@ add_to_basket(Version, Url1):-
     rdf_atom_md5(Url2, 1, Md5),
     (
       % The URL has already been added.
-      rdf(Resource, ll:md5, Md5),
-      rdf(Resource, ll:added, _)
+      rdf(Resource, llo:md5, Md5),
+      rdf(Resource, llo:added, _)
     ->
       print_message(informational, already_added(Md5))
     ;
@@ -78,11 +78,11 @@ add_to_basket(Version, Url1):-
 store_url(Version, Md5, Url):-
   lle_version_graph(Version, Graph),
   rdf_global_id(ll:Md5, Datadoc),
-  rdf_assert(Datadoc, rdf:type, ll:'URL', Graph),
-  rdf_assert(Datadoc, ll:md5, literal(type(xsd:string,Md5)), Graph),
-  rdf_assert(Datadoc, ll:url, Url, Graph),
+  rdf_assert(Datadoc, rdf:type, llo:'URL', Graph),
+  rdf_assert(Datadoc, llo:md5, literal(type(xsd:string,Md5)), Graph),
+  rdf_assert(Datadoc, llo:url, Url, Graph),
   get_dateTime(Added),
-  rdf_assert(Datadoc, ll:added, literal(type(xsd:dateTime,Added)), Graph).
+  rdf_assert(Datadoc, llo:added, literal(type(xsd:dateTime,Added)), Graph).
 
 
 
