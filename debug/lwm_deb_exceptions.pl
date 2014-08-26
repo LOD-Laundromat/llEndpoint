@@ -112,8 +112,9 @@ exception_to_atom(literal(type(XsdString,Status1)), Status2):-
 exception_to_atom(Status, Status).
 
 exception_to_atom0(exception(error(permission_error(redirect,_,_),_)), permission_error(rediction_loop)).
-exception_to_atom0(exception(error(existence_error(directory,_),_)), existence_error_directory).
-exception_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error_source_sink).
+exception_to_atom0(exception(error(existence_error(directory,_),_)), existence_error(directory)).
+exception_to_atom0(exception(error(existence_error(file,_),_)), existence_error(file)).
+exception_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error(source_sink)).
 exception_to_atom0(exception(error(http_status(Status),_)), Label):-
   atomic_list_concat([http_status,Status], '_', Label).
 exception_to_atom0(exception(error(instantiation_error(_),_)), instantiation_error).
