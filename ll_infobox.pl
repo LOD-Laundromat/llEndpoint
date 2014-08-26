@@ -21,7 +21,8 @@ for use in LOD Laundromat.
 :- use_module(library(http/http_session)). % HTTP session support.
 :- use_module(library(semweb/rdf_db)).
 
-:- use_module(generics(uri_search)).
+:- use_module(generics(request_ext)).
+:- use_module(generics(uri_query)).
 
 :- use_module(plRdf_term(rdf_string)).
 
@@ -36,7 +37,7 @@ ll_infobox(Request):-
   ll_infobox_with_cors(Request).
 
 ll_infobox_with_cors(Request):-
-  request_search_read(Request, md5, Md5), !,
+  request_query_nvpair(Request, md5, Md5), !,
   lle_version_graph(Graph),
   aggregate_all(
     set([P,O]),

@@ -21,7 +21,8 @@ by the LOD Washing Machine.
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
 
-:- use_module(generics(uri_search)).
+:- use_module(generics(request_ext)).
+:- use_module(generics(uri_query)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -35,7 +36,7 @@ by the LOD Washing Machine.
 
 lwm_deb_exceptions(Request, HtmlStyle):-
   lwm_debug_version(DefaultVersion),
-  request_search_read(Request, version, Version, DefaultVersion),
+  request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
   reply_html_page(
     HtmlStyle,

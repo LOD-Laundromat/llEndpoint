@@ -21,7 +21,7 @@ Web-based front-end to the LOD basket.
 :- use_module(library(uri)).
 
 :- use_module(generics(typecheck)).
-:- use_module(generics(uri_search)).
+:- use_module(generics(uri_query)).
 
 :- use_module(plXsd_datetime(xsd_dateTime_ext)).
 

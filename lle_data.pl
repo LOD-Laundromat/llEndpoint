@@ -19,14 +19,14 @@ Serving of data cleaned by the LOD Washing Machine.
 :- use_module(library(http/http_server_files)).
 :- use_module(library(http/http_session)). % HTTP session support.
 
-:- use_module(generics(uri_search)).
+:- use_module(generics(request_ext)).
+:- use_module(generics(uri_query)).
 
 :- use_module(lle(lle_settings)).
 
 
 
 clean_data(Request):-
-gtrace,
   data_md5(Request, Md5),
   data_kind(Request, Kind),
   lle_data_file(Md5, Kind, File),
@@ -37,7 +37,7 @@ gtrace,
 %! data_kind(+Request:list(nvpair), -Kind:oneof([clean,dirty])) is det.
 
 data_kind(Request, Kind):-
-  request_search_read(Request, kind, Kind), !.
+  request_query_nvpair(Request, kind, Kind), !.
 data_kind(_, clean).
 
 
@@ -47,4 +47,4 @@ data_md5(Request, Md5):-
   memberchk(path(Path), Request),
   atomic_list_concat(['',data,Md5], '/', Path), !.
 data_md5(Request, Md5):-
-  request_search_read(Request, md5, Md5).
+  request_query_nvpair(Request, md5, Md5).

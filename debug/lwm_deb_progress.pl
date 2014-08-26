@@ -17,7 +17,8 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 :- use_module(library(http/html_write)).
 :- use_module(library(semweb/rdf_db)).
 
-:- use_module(generics(uri_search)).
+:- use_module(generics(request_ext)).
+:- use_module(generics(uri_query)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -33,7 +34,7 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 lwm_deb_progress(Request, HtmlStyle):-
   lwm_debug_version(DefaultVersion),
-  request_search_read(Request, version, Version, DefaultVersion),
+  request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
   reply_html_page(
     HtmlStyle,
