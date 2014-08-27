@@ -24,5 +24,5 @@ while read line; do
   command="curl --data \"url=${line}&version=${version}\" ${url}";
   eval $command;
   # For debugging purposes, the command can be written to standard output.
-  echo $command;
+  #echo $command;
 done < "$input"

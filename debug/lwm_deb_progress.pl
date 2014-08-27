@@ -18,7 +18,6 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 :- use_module(library(semweb/rdf_db)).
 
 :- use_module(generics(request_ext)).
-:- use_module(generics(uri_query)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -55,8 +54,8 @@ pending_table(Graph) -->
   {findall(
     Added-[Datadoc,Added],
     (
-      rdf(Datadoc, ll:added, Added, Graph),
-      \+ rdf(Datadoc, ll:start_unpack, _, Graph)
+      rdf(Datadoc, llo:added, Added, Graph),
+      \+ rdf(Datadoc, llo:start_unpack, _, Graph)
     ),
     Pairs
   )},
@@ -69,8 +68,8 @@ unpacking_table(Graph) -->
   {findall(
     StartUnpack2-[Datadoc,StartUnpack1],
     (
-      rdf(Datadoc, ll:start_unpack, StartUnpack1, Graph),
-      \+ rdf(Datadoc, ll:end_unpack, _, Graph),
+      rdf(Datadoc, llo:start_unpack, StartUnpack1, Graph),
+      \+ rdf(Datadoc, llo:end_unpack, _, Graph),
       rdf_literal(StartUnpack1, StartUnpack2, _)
     ),
     Pairs
@@ -88,8 +87,8 @@ unpacked_table(Graph) -->
   {findall(
     EndUnpack-[Datadoc,EndUnpack],
     (
-      rdf(Datadoc, ll:end_unpack, EndUnpack, Graph),
-      \+ rdf(Datadoc, ll:start_clean, _, Graph)
+      rdf(Datadoc, llo:end_unpack, EndUnpack, Graph),
+      \+ rdf(Datadoc, llo:start_clean, _, Graph)
     ),
     Pairs
   )},
@@ -102,8 +101,8 @@ cleaning_table(Graph) -->
   {findall(
     StartClean-[Datadoc,StartClean],
     (
-      rdf(Datadoc, ll:start_clean, StartClean, Graph),
-      \+ rdf(Datadoc, ll:end_clean, _, Graph)
+      rdf(Datadoc, llo:start_clean, StartClean, Graph),
+      \+ rdf(Datadoc, llo:end_clean, _, Graph)
     ),
     Pairs
   )},
@@ -119,7 +118,7 @@ cleaning_table(Graph) -->
 cleaned_table(Graph) -->
   {findall(
     EndClean-[Datadoc,EndClean],
-    rdf(Datadoc, ll:end_clean, EndClean, Graph),
+    rdf(Datadoc, llo:end_clean, EndClean, Graph),
     Pairs
   )},
   progress_table(' cleaned data documents.', 'Cleaning end', Pairs).
