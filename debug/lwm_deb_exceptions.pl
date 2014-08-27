@@ -22,7 +22,6 @@ by the LOD Washing Machine.
 :- use_module(library(semweb/rdf_db)).
 
 :- use_module(generics(request_ext)).
-:- use_module(generics(uri_query)).
 
 :- use_module(plHtml(html_pl_term)).
 
