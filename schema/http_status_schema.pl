@@ -480,9 +480,9 @@ assert_http_status_schema(Graph):-
 
 % Helpers.
 
-rdfs_assert_status(Url, Class, ReasonPhrase, Code, Comment, Graph):-
+rdfs_assert_status(Uri, Class, ReasonPhrase, Code, Comment, Graph):-
   rdfs_assert_status(
-    Url,
+    Uri,
     Class,
     ReasonPhrase,
     Code,
@@ -491,9 +491,9 @@ rdfs_assert_status(Url, Class, ReasonPhrase, Code, Comment, Graph):-
     'http://tools.ietf.org/html/rfc7231'
   ).
 
-rdfs_assert_status(Url, Class, ReasonPhrase, Code, Comment, Graph, Dep):-
-  rdfs_assert_instance(Url, Class, ReasonPhrase, Comment, Graph),
-  rdf_assert_datatype(Url, http:statusCode, Code, xsd:int, Graph),
-  rdf_assert_string(Url, http:reasonPhrase, ReasonPhrase, Graph),
-  rdf_assert(Url, rdfs:isDefinedBy, Def, Graph).
+rdfs_assert_status(Uri, Class, ReasonPhrase, Code, Comment, Graph, Def):-
+  rdfs_assert_instance(Uri, Class, ReasonPhrase, Comment, Graph),
+  rdf_assert_datatype(Uri, http:statusCode, Code, xsd:int, Graph),
+  rdf_assert_string(Uri, http:reasonPhrase, ReasonPhrase, Graph),
+  rdf_assert(Uri, rdfs:isDefinedBy, Def, Graph).
 

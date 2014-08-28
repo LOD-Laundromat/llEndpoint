@@ -24,17 +24,6 @@ Generates the schema file for the LOD Washing Machine.
 
 
 assert_schema(Graph):-
-  % Related to <http://dbpedia.org/resource/Exception>?
-  rdfs_assert_class(
-    exc:'Exception',
-    rdfs:'Class',
-    exception,
-    'An action that is not part of ordinary operations or standards.',
-    Graph
-  ),
-
-
-assert_schema(Graph):-
   % ArchiveEntry and URL partition the space of data documents.
   % Some data documents are in Archive.
 
@@ -315,7 +304,7 @@ assert_schema(Graph):-
   rdfs_assert_property(
     llo:serialization_format,
     dcat:'Distribution',
-    xsd:string,
+    rdfs:'Resource',
     'serialization format',
     'The RDF serialization format that the dirty data document \c
      was parsed in.\n\c
@@ -396,6 +385,16 @@ assert_schema(Graph):-
      Possible values: (1) TODO \c
        (1) Syntax error while parsing RDF file. \c
        (2) No RDF in file.',
+    Graph
+  ),
+  
+  % unrecognizedFormat
+  rdfs_assert_instance(
+    llo:unrecognizedFormat,
+    rdfs:'Resource',
+    'unrecognized format',
+    'A syntactic format that is not recognized as any of \c
+     the RDF serialization formats.',
     Graph
   ).
 
