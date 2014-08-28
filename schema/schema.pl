@@ -24,6 +24,17 @@ Generates the schema file for the LOD Washing Machine.
 
 
 assert_schema(Graph):-
+  % Related to <http://dbpedia.org/resource/Exception>?
+  rdfs_assert_class(
+    exc:'Exception',
+    rdfs:'Class',
+    exception,
+    'An action that is not part of ordinary operations or standards.',
+    Graph
+  ),
+
+
+assert_schema(Graph):-
   % ArchiveEntry and URL partition the space of data documents.
   % Some data documents are in Archive.
 
