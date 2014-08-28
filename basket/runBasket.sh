@@ -9,13 +9,10 @@
 # ttp://rod.eionet.europa.eu/issues
 
 scheme="http"
-#scheme="http"
 
-authority1="localhost:3020"
-#authority2=""
+authority="localhost:3020"
 
-path1="/basket"
-#path2=""
+path="/basket"
 
 version="11"
 
@@ -23,12 +20,9 @@ version="11"
 input=url.data
 
 while read line; do
-  url1 = ${scheme1}://${authortity1}${path1};
-  url2 = ${scheme2}://${authortity2}${path2};
-  command="curl --data \"url=${line}&version=${version}\" ${url1}";
-  #command="curl --data \"url=${line}&version=${version}\" ${url2}";
+  url=${scheme}://${authority}${path};
+  command="curl --data \"url=${line}&version=${version}\" ${url}";
   eval $command;
   # For debugging purposes, the command can be written to standard output.
   #echo $command;
 done < "$input"
-

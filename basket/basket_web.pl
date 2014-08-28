@@ -13,7 +13,6 @@ Web-based front-end to the LOD basket.
 @version 2014/06, 2014/08
 */
 
-:- use_module(library(http/http_client)).
 :- use_module(library(http/http_cors)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_parameters)).
@@ -21,7 +20,6 @@ Web-based front-end to the LOD basket.
 :- use_module(library(uri)).
 
 :- use_module(generics(typecheck)).
-:- use_module(generics(uri_query)).
 
 :- use_module(plXsd_datetime(xsd_dateTime_ext)).
 
@@ -58,6 +56,9 @@ basket(Request):-
 %! add_to_basket(+Version:positive_integer, +Url:url) is det.
 
 add_to_basket(Version, Url1):-
+  % If the given argument is an IRI, then non-URL Unicode characters
+  % may appear in it unescaped. This conversion escapes such characters
+  % to ensure a valid URL.
   uri_iri(Url2, Url1),
   with_mutex(lle_basket, (
     rdf_atom_md5(Url2, 1, Md5),
