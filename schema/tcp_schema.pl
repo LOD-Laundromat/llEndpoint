@@ -1,29 +1,45 @@
 :- module(
-  tcp_socket_error_schema,
+  tcp_socket_schema,
   [
     assert_tcp_socket_error_schema/1 % +Graph:atom
   ]
 ).
 
+/** <module> TCP socket schema
+
+Asserts the schema for TCP socket.
+
+@author Wouter Beek
+@version 2014/08
+*/
+
+:- use_module(library(semweb/rdf_db)).
+
+:- use_module(plRdf(rdfs_build2)).
+:- use_module(plRdf_term(rdf_datatype)).
+:- use_module(plRdf_term(rdf_string)).
+
+:- rdf_register_prefix(tcp, 'http://lodlaundromat.org/tcp-status/ontology/').
+
+
 
 assert_tcp_socket_error_schema(Graph):-
   forall(
     tcp_socket_error(Code, ReasonPhrase),
-    (
-      rdf_global_id(tcp:Code, Uri),
-      rdfs_assert_status(Uri, tcp:'Status', ReasonPhrase, Code, Graph),
-      Def = 'https://gist.github.com/gabrielfalcao/4216897',
-      rdf_assert(Uri, rdfs:isDefinedBy, Def, Graph)
-    )
+    rdfs_assert_status(Code, tcp:'Status', ReasonPhrase, Graph)
   ).
+
 
 
 % Helpers.
 
-rdfs_assert_status(Uri, Class, ReasonPhrase, Code, Graph):-
-  rdfs_assert_instance(Uri, Class, ReasonPhrase, Graph),
+rdfs_assert_status(Code, Class, ReasonPhrase, Graph):-
+  rdf_global_id(tcp:Code, Uri),
+  rdfs_assert_instance(Uri, Class, ReasonPhrase, _, Graph),
   rdf_assert_datatype(Uri, http:statusCode, Code, xsd:int, Graph),
   rdf_assert_string(Uri, http:reasonPhrase, ReasonPhrase, Graph).
+  Def = 'https://gist.github.com/gabrielfalcao/4216897',
+  rdf_assert(Uri, rdfs:isDefinedBy, Def, Graph).
 
 
 

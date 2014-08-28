@@ -1,11 +1,11 @@
 :- module(
-  schema,
+  ll_schema,
   [
     init_schema/1 % +Graph:atom
   ]
 ).
 
-/** <module> LOD Washing Machine: schema
+/** <module> LOD Laundromat: schema
 
 Generates the schema file for the LOD Washing Machine.
 
