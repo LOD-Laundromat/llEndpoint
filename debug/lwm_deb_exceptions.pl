@@ -12,7 +12,7 @@ A Web-based debug tool for surveying exceptions thrown
 by the LOD Washing Machine.
 
 @author Wouter Beek
-@version 2014/08
+@version 2014/08-2014/09
 */
 
 :- use_module(library(apply)).
@@ -20,6 +20,7 @@ by the LOD Washing Machine.
 :- use_module(library(lists)).
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(library(semweb/rdfs)).
 
 :- use_module(generics(request_ext)).
 
@@ -28,6 +29,12 @@ by the LOD Washing Machine.
 :- use_module(plTabular(rdf_html_table)).
 
 :- use_module(lle(lle_settings)).
+
+:- rdf_register_prefix(bnode, 'http://lodlaundromat.org/.well-known/genid/').
+:- rdf_register_prefix(error, 'http://lodlaundromat.org/error/ontology/').
+:- rdf_register_prefix(http, 'http://lodlaundromat.org/http/ontology/').
+:- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
+:- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
 
 
 
@@ -47,10 +54,14 @@ lwm_deb_exceptions(Request, HtmlStyle):-
 lwm_deb_exceptions(Graph) -->
   {
     findall(
-      Exception2-Datadoc,
+      Error2-Datadoc,
       (
-        rdf(Datadoc, llo:exception, Exception1, Graph),
-        exception_to_atom(Exception1, Exception2)
+        (
+	  rdf(Datadoc, llo:exception, Error1, Graph)
+	;
+          rdf(Datadoc, llo:warning, Error1, Graph)
+        ),
+        once(exception_to_atom(Error1, Error2))
       ),
       Pairs1
     ),
@@ -103,31 +114,21 @@ datadoc_to_row(Graph, Datadoc, [Datadoc,Url,Path]):-
   atomic_list_concat(Paths, '-', Path).
 
 
-%! exception_to_atom(+Exception, -Atom) is det.
+%! exception_to_atom(+Term, -Atom) is det.
 
-exception_to_atom(literal(type(XsdString,Status1)), Status2):-
-  rdf_equal(xsd:string, XsdString),
-  read_term_from_atom(Status1, StatusTerm, []),
-  once(exception_to_atom0(StatusTerm, Status2)), !.
-exception_to_atom(Status, Status).
+exception_to_atom(BNode, Atom):-
+  llo_is_bnode(BNode), !,
+  rdf(BNode, rdf:type, Class),
+  (   rdfs_label(Class, Atom0)
+  ->  Atom = Atom0
+  ;   Atom = Class
+  ).
+exception_to_atom(Resource, Atom):-
+  (   rdfs_label(Resource, Atom0)
+  ->  Atom = Atom0
+  ;   Atom = Resource
+  ).
 
-exception_to_atom0(exception(error(permission_error(redirect,_,_),_)), permission_error(rediction_loop)).
-exception_to_atom0(exception(error(existence_error(directory,_),_)), existence_error(directory)).
-exception_to_atom0(exception(error(existence_error(file,_),_)), existence_error(file)).
-exception_to_atom0(exception(error(existence_error(source_sink,_),_)), existence_error(source_sink)).
-exception_to_atom0(exception(error(http_status(Status),_)), Label):-
-  atomic_list_concat([http_status,Status], '_', Label).
-exception_to_atom0(exception(error(instantiation_error(_),_)), instantiation_error).
-exception_to_atom0(exception(error(io_error(Mode,_),_)), Label):-
-  atomic_list_concat([io_error,Mode], '_', Label).
-exception_to_atom0(exception(error(limit_exceeded(max_errors,_),_)), limit_exceeded_max_errors).
-exception_to_atom0(exception(error(no_rdf(_))), no_rdf).
-exception_to_atom0(exception(error(socket_error(_),_)), socket_error).
-exception_to_atom0(exception(error(ssl_error(Kind),_)), Label):-
-  atomic_list_concat([ssl_error,Kind], '_', Label).
-exception_to_atom0(exception(error(timeout_error(Mode,_),_)), Label):-
-  atomic_list_concat([timeout_error,Mode], '_', Label).
-exception_to_atom0(exception(error(type_error(xml_dom,_),_)), type_error_xml_dom).
-exception_to_atom0(false, false).
-exception_to_atom0(true, true).
+llo_is_bnode(BNode):-
+  rdf_global_id(bnode:_, BNode).
 

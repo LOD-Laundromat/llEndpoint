@@ -23,9 +23,6 @@ user:body(lle, Body) -->
   html_requires(css('plServer.css')),
   user:body(cliopatria(default), Body).
 
-% Load the LOD Laundromat schema.
-:- use_module(lle_schema(schema)).
-
 
 
 % #1: Serves clean data documents.

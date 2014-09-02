@@ -55,7 +55,7 @@ pending_table(Graph) -->
     Added-[Datadoc,Added],
     (
       rdf(Datadoc, llo:added, Added, Graph),
-      \+ rdf(Datadoc, llo:start_unpack, _, Graph)
+      \+ rdf(Datadoc, llo:startUnpack, _, Graph)
     ),
     Pairs
   )},
@@ -68,8 +68,8 @@ unpacking_table(Graph) -->
   {findall(
     StartUnpack2-[Datadoc,StartUnpack1],
     (
-      rdf(Datadoc, llo:start_unpack, StartUnpack1, Graph),
-      \+ rdf(Datadoc, llo:end_unpack, _, Graph),
+      rdf(Datadoc, llo:startUnpack, StartUnpack1, Graph),
+      \+ rdf(Datadoc, llo:endUnpack, _, Graph),
       rdf_literal(StartUnpack1, StartUnpack2, _)
     ),
     Pairs
@@ -87,8 +87,8 @@ unpacked_table(Graph) -->
   {findall(
     EndUnpack-[Datadoc,EndUnpack],
     (
-      rdf(Datadoc, llo:end_unpack, EndUnpack, Graph),
-      \+ rdf(Datadoc, llo:start_clean, _, Graph)
+      rdf(Datadoc, llo:endUnpack, EndUnpack, Graph),
+      \+ rdf(Datadoc, llo:startClean, _, Graph)
     ),
     Pairs
   )},
@@ -101,8 +101,8 @@ cleaning_table(Graph) -->
   {findall(
     StartClean-[Datadoc,StartClean],
     (
-      rdf(Datadoc, llo:start_clean, StartClean, Graph),
-      \+ rdf(Datadoc, llo:end_clean, _, Graph)
+      rdf(Datadoc, llo:startClean, StartClean, Graph),
+      \+ rdf(Datadoc, llo:endClean, _, Graph)
     ),
     Pairs
   )},
@@ -118,7 +118,7 @@ cleaning_table(Graph) -->
 cleaned_table(Graph) -->
   {findall(
     EndClean-[Datadoc,EndClean],
-    rdf(Datadoc, llo:end_clean, EndClean, Graph),
+    rdf(Datadoc, llo:endClean, EndClean, Graph),
     Pairs
   )},
   progress_table(' cleaned data documents.', 'Cleaning end', Pairs).
