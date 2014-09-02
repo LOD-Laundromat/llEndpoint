@@ -103,7 +103,7 @@ datadoc_source(Graph, Datadoc, Source):-
 
 datadoc_source0(Graph, Datadoc, [Path|T]):-
   rdf(Datadoc, llo:path, literal(type(xsd:string,Path)), Graph),
-  rdf(Parentdoc, llo:contains_entry, Datadoc, Graph),
+  rdf(Parentdoc, llo:containsEntry, Datadoc, Graph),
   datadoc_source(Graph, Parentdoc, T).
 
 
