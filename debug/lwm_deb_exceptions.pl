@@ -32,7 +32,6 @@ by the LOD Washing Machine.
 
 :- rdf_register_prefix(bnode, 'http://lodlaundromat.org/.well-known/genid/').
 :- rdf_register_prefix(error, 'http://lodlaundromat.org/error/ontology/').
-:- rdf_register_prefix(http, 'http://lodlaundromat.org/http/ontology/').
 :- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
 :- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
 
