@@ -31,7 +31,7 @@ lwm_deb(_, HtmlStyle):-
     html([
       'LOD Washing Machine debug tools:',
       \html_list(
-        [lwm_deb_exceptions,lwm_deb_progress],
+        [lwm_deb_errors,lwm_deb_progress],
         html_http_handler,
         [ordered(false)]
       )

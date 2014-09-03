@@ -1,8 +1,8 @@
 :- module(
-  lwm_deb_exceptions,
+  lwm_deb_errors,
   [
-    lwm_deb_exceptions/2 % +Request:list(nvpair)
-                         % +HtmlStyle
+    lwm_deb_errors/2 % +Request:list(nvpair)
+                     % +HtmlStyle
   ]
 ).
 
@@ -37,20 +37,20 @@ by the LOD Washing Machine.
 
 
 
-%! lwm_deb_exceptions(+Request:list(nvpair), +HtmlStyle)// is det.
+%! lwm_deb_errors(+Request:list(nvpair), +HtmlStyle)// is det.
 
-lwm_deb_exceptions(Request, HtmlStyle):-
+lwm_deb_errors(Request, HtmlStyle):-
   lwm_debug_version(DefaultVersion),
   request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
-    html(\lwm_deb_exceptions(Graph))
+    html(\lwm_deb_errors(Graph))
   ).
 
 
-lwm_deb_exceptions(Graph) -->
+lwm_deb_errors(Graph) -->
   {
     findall(
       Error2-Datadoc,
