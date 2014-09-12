@@ -56,8 +56,8 @@ lwm_deb_errors(Graph) -->
       Error2-Datadoc,
       (
         (
-	  rdf(Datadoc, llo:exception, Error1, Graph)
-	;
+          rdf(Datadoc, llo:exception, Error1, Graph)
+        ;
           rdf(Datadoc, llo:warning, Error1, Graph)
         ),
         once(exception_to_atom(Error1, Error2))

@@ -34,12 +34,6 @@
 
 
 
-% Load the LOD Laundromat schema.
-
-:- use_module(lle_schema(schema)).
-
-
-
 % LOD Basket endpoint.
 
 :- use_module(lle_basket(basket_web)).
