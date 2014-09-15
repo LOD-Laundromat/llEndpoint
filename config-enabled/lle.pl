@@ -20,7 +20,7 @@
 
 :- multifile(user:body//2).
 user:body(lle, Body) -->
-  html_requires(css('plServer.css')),
+  html_requires(css(plServer)),
   user:body(cliopatria(default), Body).
 
 
@@ -75,4 +75,3 @@ http:location(lwm_deb, cliopatria(deb), []).
 lwm_deb_errors(Request):- lwm_deb_errors(Request, lle).
 lwm_deb_progress(Request):- lwm_deb_progress(Request, lle).
 lwm_deb(Request):- lwm_deb(Request, lle).
-
