@@ -15,6 +15,7 @@ by the LOD Washing Machine.
 @version 2014/08-2014/09
 */
 
+:- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
 :- use_module(library(lists)).
@@ -53,8 +54,10 @@ lwm_deb_errors(Request, HtmlStyle):-
 
 lwm_deb_errors(Graph) -->
   {
-    findall(
-      Error2-Datadoc,
+    % The of aggregation prevents the same MD5 from
+    % showing up multiple times.
+    aggregate_all(
+      set(Error2-Datadoc),
       (
         (
           rdf(Datadoc, llo:exception, Error1, Graph)
