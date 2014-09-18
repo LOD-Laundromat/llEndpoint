@@ -22,6 +22,7 @@ by the LOD Washing Machine.
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(semweb/rdfs)).
 
+:- use_module(generics(list_ext)).
 :- use_module(generics(request_ext)).
 
 :- use_module(plHtml(html_pl_term)).
@@ -72,9 +73,10 @@ lwm_deb_errors(Graph) -->
 
 lwm_exception_table(Graph, Exception, Datadocs1) -->
   {
-    sort(Datadocs1, Datadocs2),
-    maplist(datadoc_to_row(Graph), Datadocs2, Rows),
-    length(Datadocs2, Length)
+    length(Datadocs1, Length),
+    list_truncate(Datadocs1, 10, Datadocs2),
+    sort(Datadocs2, Datadocs3),
+    maplist(datadoc_to_row(Graph), Datadocs3, Rows)
   },
   rdf_html_table(
     html([
@@ -83,7 +85,7 @@ lwm_exception_table(Graph, Exception, Datadocs1) -->
       \html_pl_term(lwm,Exception)
     ]),
     [['Datadoc','URL','Path']|Rows],
-    [graph(Graph),header_row(true),maximum_number_of_rows(10)]
+    [graph(Graph),header_row(true)]
   ).
 
 lwm_exception_tables(_, []) --> [].
@@ -97,8 +99,9 @@ lwm_exception_tables(Graph, [Exception-Datadocs|T]) -->
 datadoc_source(Graph, Datadoc, [Url]):-
   rdf(Datadoc, llo:url, Url, Graph), !.
 datadoc_source(Graph, Datadoc, Source):-
-  datadoc_source0(Graph, Datadoc, Source0),
+  datadoc_source0(Graph, Datadoc, Source0), !,
   reverse(Source0, Source).
+datadoc_source(_, _, ['FAILURE','FAILURE']).
 
 datadoc_source0(Graph, Datadoc, [Path|T]):-
   rdf(Datadoc, llo:path, literal(type(xsd:string,Path)), Graph),
