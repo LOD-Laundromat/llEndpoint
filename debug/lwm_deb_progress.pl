@@ -11,7 +11,7 @@
 A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 @author Wouter Beek
-@version 2014/05-2014/06, 2014/08
+@version 2014/05-2014/06, 2014/08-2014/09
 */
 
 :- use_module(library(http/html_write)).
