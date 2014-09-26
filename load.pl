@@ -18,3 +18,15 @@
     plTabular
 ]).
 
+
+
+:- use_module(library(process)).
+
+%:- initialization(load_basket).
+
+load_basket:-
+  sleep(10),
+  absolute_file_name(lle_basket('runBasket.sh'), File, [access(execute)]),
+  file_directory_name(File, Directory),
+  process_create(File, [], [cwd(Directory),detached(true)]).
+
