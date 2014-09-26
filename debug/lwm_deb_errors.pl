@@ -77,7 +77,7 @@ lwm_deb_errors(Graph) -->
 lwm_exception_table(Graph, Exception, Datadocs1) -->
   {
     length(Datadocs1, Length),
-    list_truncate(Datadocs1, 10, Datadocs2),
+    list_truncate(Datadocs1, 3, Datadocs2),
     sort(Datadocs2, Datadocs3),
     maplist(datadoc_to_row(Graph), Datadocs3, Rows)
   },

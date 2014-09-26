@@ -143,7 +143,7 @@ progress_table(CaptionPostfix, ColumnHeader, Pairs) -->
       header_column(true),
       header_row(true),
       indexed(true),
-      maximum_number_of_rows(10)
+      maximum_number_of_rows(3)
     ]
   ).
 
