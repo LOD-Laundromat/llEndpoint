@@ -133,11 +133,14 @@ cleaned_table(Graph) -->
 %!   +Pairs:list(pair)
 %! )// is det.
 
-progress_table(CaptionPostfix, ColumnHeader, Pairs) -->
-  {length(Pairs, Length)},
+progress_table(CaptionPostfix, ColumnHeader, Pairs1) -->
+  {
+    keysort(Pairs1, Pairs2),
+    length(Pairs2, Length)
+  },
   rdf_html_table_pairs(
     ['Data document',ColumnHeader],
-    Pairs,
+    Pairs2,
     html([\html_pl_term(lwm,Length),CaptionPostfix]),
     [
       header_column(true),
