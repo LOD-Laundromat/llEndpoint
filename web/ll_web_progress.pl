@@ -1,4 +1,4 @@
-:- module(lwm_deb_progress, []).
+:- module(ll_web_progress, []).
 
 /** <module> LOD Washing Machine: Progress
 
@@ -21,22 +21,25 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 :- use_module(plTabular(rdf_html_table_pairs)).
 
 :- use_module(lle(lle_settings)).
+:- use_module(lle(web/ll_web_generics)).
 
-:- http_handler(lle(progress), lwm_deb_progress, [priority(1)]).
-
-
-
+:- http_handler(lle(progress), ll_web_progress, [priority(1)]).
 
 
-%! lwm_deb_progress(+Request:list(nvpair))// is det.
 
-lwm_deb_progress(Request):-
+
+
+%! ll_web_progress(+Request:list(nvpair))// is det.
+
+ll_web_progress(Request):-
   lwm_debug_version(DefaultVersion),
   request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
+  user:current_html_style(HtmlStyle),
   reply_html_page(
+    HtmlStyle,
     title('LOD Laundromat'),
-    html([
+    \lle_body([
       \pending_table(Graph),
       \unpacking_table(Graph),
       \unpacked_table(Graph),

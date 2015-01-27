@@ -1,4 +1,4 @@
-:- module(lwm_deb_errors, []).
+:- module(ll_web_errors, []).
 
 /** <module> LOD Washing Machine: Exceptions
 
@@ -26,26 +26,29 @@ by the LOD Washing Machine.
 :- use_module(plTabular(rdf_html_table)).
 
 :- use_module(lle(lle_settings)).
+:- use_module(lle(web/ll_web_generics)).
 
-:- http_handler(lle(errors), lwm_deb_errors, [priority(1)]).
-
-
-
+:- http_handler(lle(errors), ll_web_errors, [priority(1)]).
 
 
-%! lwm_deb_errors(+Request:list(nvpair), +HtmlStyle)// is det.
 
-lwm_deb_errors(Request):-
+
+
+%! ll_web_errors(+Request:list(nvpair), +HtmlStyle)// is det.
+
+ll_web_errors(Request):-
   lwm_debug_version(DefaultVersion),
   request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
+  user:current_html_style(HtmlStyle),
   reply_html_page(
+    HtmlStyle,
     title('LOD Laundromat'),
-    html(\lwm_deb_errors(Graph))
+    \lle_body(\ll_web_errors(Graph))
   ).
 
 
-lwm_deb_errors(Graph) -->
+ll_web_errors(Graph) -->
   {
     % The of aggregation prevents the same MD5 from
     % showing up multiple times.

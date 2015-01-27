@@ -1,9 +1,4 @@
-:- module(
-  ll_infobox,
-  [
-    ll_infobox/1 % +Request:list(nvpair)
-  ]
-).
+:- module(ll_infobox, []).
 
 /** <module> LOD Laundromat Infobox
 
@@ -11,10 +6,11 @@ Serves responses for the contents of a metadata infobox in HTML,
 for use in LOD Laundromat.
 
 @author Wouter Beek
-@version 2014/07-2014/08
+@version 2014/07-2014/08, 2015/01
 */
 
 :- use_module(library(aggregate)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_header)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_cors)).
@@ -30,6 +26,10 @@ for use in LOD Laundromat.
 :- use_module(plTabular(rdf_html_table)).
 
 :- use_module(lle(lle_settings)).
+
+:- http_handler(lle(infobox), ll_infobox, [id(ll_infobox)]).
+
+
 
 
 

@@ -1,6 +1,38 @@
 :- module(conf_lle, []).
 
-% Load project.
+
+
+% Web root.
+:- dynamic(http:location/3).
+:- multifile(http:location/3).
+http:location(lle, cliopatria(lle), []).
+
+
+
+% Current HTML style set to ClioPatria default.
+user:current_html_style(cliopatria(default)).
+
+
+
+/*
+% HTML resources.
+:- html_resource(
+     css(plTabular),
+     [requires([css('plTabular.css')]),virtual(true)]
+   ).
+*/
+
+
+
+% ClioPatria menu items.
+:- multifile(cliopatria:menu_item/2).
+cliopatria:menu_item(500=lle/ll_web_errors, 'LOD Errors').
+cliopatria:menu_item(500=lle/ll_web_progress, 'LOD Progress').
+cliopatria:menu_item(600=lle/plTabular, plTabular).
+
+
+
+% Load modules.
 :- if(\+ current_module(load_project)).
   :- if(current_prolog_flag(argv, ['--debug'])).
     :- ensure_loaded('../debug').
@@ -8,32 +40,4 @@
     :- ensure_loaded('../load').
   :- endif.
 :- endif.
-
-
-
-:- use_module(cliopatria(hooks)).
-
-:- use_module(plTabular(rdf_tabular)).
-
-:- use_module(lle(lle_data)).
-:- use_module(lle(basket/basket_web)).
-:- use_module(lle(debug/lwm_deb)).
-:- use_module(lle(debug/lwm_deb_errors)).
-:- use_module(lle(debug/lwm_deb_progress)).
-
-user:current_html_style(menu_page).
-
-
-% ClioPatria menu items.
-:- multifile(cliopatria:menu_item/2).
-cliopatria:menu_item(500=lle/lwm_deb_errors, 'LOD Errors').
-cliopatria:menu_item(500=lle/lwm_deb_progress, 'LOD Progress').
-cliopatria:menu_item(600=lle/plTabular, plTabular).
-
-
-
-% Web root.
-:- dynamic(http:location/3).
-:- multifile(http:location/3).
-http:location(lle, cliopatria(lle), []).
 

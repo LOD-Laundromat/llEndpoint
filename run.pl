@@ -1,5 +1,6 @@
 % Standalone startup file for the LOD Laundromat endpoint.
 
+% Load modules.
 :- if(current_prolog_flag(argv, ['--debug'])).
   :- ensure_loaded(debug).
 :- else.
@@ -18,33 +19,23 @@
 :- start_app_server.
 
 
-% Serve clean data documents.
-:- use_module(library(http/http_server_files)).
-:- http_handler(
-  root(data),
-  serve_files_in_directory_with_cors(data),
-  [id(data),prefix]
-).
 
-
-:- dynamic(user:web_module/2).
-:- multifile(user:web_module/2).
-
-:- multifile(http:location/3).
-:- dynamic(http:location/3).
-
-http:location(lle, /, []).
-
+% Default HTML style.
 user:current_html_style(menu_page).
 
-% LOD Basket.
-:- use_module(lle(basket/basket_web)).
 
-% plTabular.
-:- use_module(plTabular(rdf_tabular)).
+
+% Web root.
+:- multifile(http:location/3).
+:- dynamic(http:location/3).
+http:location(lle, /, []).
+
+
+
+% Register Web modules.
+:- dynamic(user:web_module/2).
+:- multifile(user:web_module/2).
 user:web_module(plTabular, rdf_tabular).
-
-% LOD Washing Machine endpoint.
-:- use_module(lle(debug/lwm_deb)).
-user:web_module('LOD Washing Machine', lwm_deb).
+user:web_module('LOD Errors', ll_web_errors).
+user:web_module('LOD Progress', ll_web_progress).
 
