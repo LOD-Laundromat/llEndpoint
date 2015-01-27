@@ -1,42 +1,40 @@
-:- module(
-  lwm_deb_progress,
-  [
-    lwm_deb_progress/2 % +Request:list(nvpair)
-                         % +HtmlStyle
-  ]
-).
+:- module(lwm_deb_progress, []).
 
 /** <module> LOD Washing Machine: Progress
 
 A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 @author Wouter Beek
-@version 2014/05-2014/06, 2014/08-2014/09
+@version 2014/05-2014/06, 2014/08-2014/09, 2015/01
 */
 
 :- use_module(library(http/html_write)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
-:- use_module(generics(request_ext)).
+:- use_module(plHttp(request_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 
-:- use_module(plRdf_term(rdf_literal)).
+:- use_module(plRdf(term/rdf_literal)).
 
 :- use_module(plTabular(rdf_html_table_pairs)).
 
 :- use_module(lle(lle_settings)).
 
+:- http_handler(lle(progress), lwm_deb_progress, [priority(1)]).
 
 
-%! lwm_deb_progress(+Request:list(nvpair), +HtmlStyle)// is det.
 
-lwm_deb_progress(Request, HtmlStyle):-
+
+
+%! lwm_deb_progress(+Request:list(nvpair))// is det.
+
+lwm_deb_progress(Request):-
   lwm_debug_version(DefaultVersion),
   request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
   reply_html_page(
-    HtmlStyle,
     title('LOD Laundromat'),
     html([
       \pending_table(Graph),
@@ -65,15 +63,17 @@ pending_table(Graph) -->
 %! unpacking_table(+Graph:atom)// is det.
 
 unpacking_table(Graph) -->
-  {findall(
-    StartUnpack2-[Datadoc,StartUnpack1],
-    (
-      rdf(Datadoc, llo:startUnpack, StartUnpack1, Graph),
-      \+ rdf(Datadoc, llo:endUnpack, _, Graph),
-      rdf_literal(StartUnpack1, StartUnpack2, _)
-    ),
-    Pairs
-  )},
+  {
+    findall(
+      StartUnpack2-[Datadoc,StartUnpack1],
+      (
+        rdf(Datadoc, llo:startUnpack, StartUnpack1, Graph),
+        \+ rdf(Datadoc, llo:endUnpack, _, Graph),
+        rdf_literal_data(value, StartUnpack1, StartUnpack2)
+      ),
+      Pairs
+    )
+  },
   progress_table(
     ' data documents are being unpacked.',
     'Unpacking start',

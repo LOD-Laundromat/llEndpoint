@@ -35,10 +35,16 @@
 
 
 
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
+:- rdf_register_prefix(bnode, 'http://lodlaundromat.org/.well-known/genid/').
+:- rdf_register_prefix(error, 'http://lodlaundromat.org/error/ontology/').
+:- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
+:- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
+
+
+
 :- use_module(library(process)).
-
 %:- initialization(load_basket).
-
 load_basket:-
   sleep(10),
   absolute_file_name(lle_basket('runBasket.sh'), File, [access(execute)]),

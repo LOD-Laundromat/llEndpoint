@@ -1,10 +1,4 @@
-:- module(
-  lwm_deb_errors,
-  [
-    lwm_deb_errors/2 % +Request:list(nvpair)
-                     % +HtmlStyle
-  ]
-).
+:- module(lwm_deb_errors, []).
 
 /** <module> LOD Washing Machine: Exceptions
 
@@ -12,7 +6,7 @@ A Web-based debug tool for surveying exceptions thrown
 by the LOD Washing Machine.
 
 @author Wouter Beek
-@version 2014/08-2014/09
+@version 2014/08-2014/09, 2015/01
 */
 
 :- use_module(library(aggregate)).
@@ -20,11 +14,12 @@ by the LOD Washing Machine.
 :- use_module(library(http/html_write)).
 :- use_module(library(lists)).
 :- use_module(library(pairs)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 :- use_module(library(semweb/rdfs)).
 
 :- use_module(generics(list_ext)).
-:- use_module(generics(request_ext)).
+
+:- use_module(plHttp(request_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -32,21 +27,19 @@ by the LOD Washing Machine.
 
 :- use_module(lle(lle_settings)).
 
-:- rdf_register_prefix(bnode, 'http://lodlaundromat.org/.well-known/genid/').
-:- rdf_register_prefix(error, 'http://lodlaundromat.org/error/ontology/').
-:- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
-:- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
+:- http_handler(lle(errors), lwm_deb_errors, [priority(1)]).
+
+
 
 
 
 %! lwm_deb_errors(+Request:list(nvpair), +HtmlStyle)// is det.
 
-lwm_deb_errors(Request, HtmlStyle):-
+lwm_deb_errors(Request):-
   lwm_debug_version(DefaultVersion),
   request_query_nvpair(Request, version, Version, DefaultVersion),
   lle_version_graph(Version, Graph),
   reply_html_page(
-    HtmlStyle,
     title('LOD Laundromat'),
     html(\lwm_deb_errors(Graph))
   ).

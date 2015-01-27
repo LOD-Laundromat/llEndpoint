@@ -16,7 +16,7 @@ intended for debugging purposes.
 :- use_module(plHtml(html)).
 :- use_module(plHtml(html_list)).
 
-:- http_handler(root(lwm), lwm_deb, [id(lwm)]).
+:- http_handler(lle(.), lwm_deb, [id(lwm)]).
 
 
 

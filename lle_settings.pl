@@ -20,15 +20,14 @@
 Settings for operating the LOD Laundromat endpoint.
 
 @author Wouter Beek
-@version 2014/08
+@version 2014/08, 2015/01
 */
 
 :- use_module(library(filesex)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 :- use_module(library(uri)).
 
-:- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
-:- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
+
 
 
 

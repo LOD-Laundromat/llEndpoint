@@ -19,12 +19,13 @@ for use in LOD Laundromat.
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_cors)).
 :- use_module(library(http/http_session)). % HTTP session support.
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
-:- use_module(generics(request_ext)).
-:- use_module(generics(uri_query)).
+:- use_module(plUri(uri_query)).
 
-:- use_module(plRdf_term(rdf_string)).
+:- use_module(plHttp(request_ext)).
+
+:- use_module(plRdf(term/rdf_string)).
 
 :- use_module(plTabular(rdf_html_table)).
 
