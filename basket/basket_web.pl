@@ -1,19 +1,15 @@
-:- module(
-  basket_web,
-  [
-    basket/1 % +Request:list(nvpair)
-  ]
-).
+:- module(basket_web, []).
 
-/** <module> LOD Laundromat: basket web
+/** <module> LOD Basket: Endpoint
 
 Web-based front-end to the LOD basket.
 
 @author Wouter Beek
-@version 2014/06, 2014/08
+@version 2014/06, 2014/08, 2015/01
 */
 
 :- use_module(library(http/http_cors)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(semweb/rdf_db)).
@@ -21,35 +17,36 @@ Web-based front-end to the LOD basket.
 
 :- use_module(generics(typecheck)).
 
-:- use_module(plXsd_datetime(xsd_dateTime_ext)).
+:- use_module(plXsd(dateTime/xsd_dateTime_functions)).
 
 :- use_module(lle(lle_settings)).
+
+:- http_handler(root(basket), basket, [id(llBasket)]).
+
+
 
 
 
 basket(Request):-
   cors_enable,
-  (
-    catch(
-      http_parameters(
-        Request,
-        [url(Url,[atom]),version(Version,[nonneg])]
+  (   catch(
+        http_parameters(
+          Request,
+          [url(Url,[atom]),version(Version,[nonneg])]
+        ),
+        _,
+        fail
       ),
-      _,
-      fail
-    ),
-    is_url(Url)
-  ->
-    % Make sure that it is a URL.
-    add_to_basket(Version, Url),
-
-    % HTTP status code 202 Accepted: The request has been accepted
-    % for processing, but the processing has not been completed.
-    reply_json(json{}, [status(202)])
-  ;
-    % HTTP status code 400 Bad Request: The request could not
-    % be understood by the server due to malformed syntax.
-    reply_json(json{}, [status(400)])
+      is_uri(Url)
+  ->  % Make sure that it is a URL.
+      add_to_basket(Version, Url),
+      
+      % HTTP status code 202 Accepted: The request has been accepted
+      % for processing, but the processing has not been completed.
+      reply_json(json{}, [status(202)])
+  ;   % HTTP status code 400 Bad Request: The request could not
+      % be understood by the server due to malformed syntax.
+      reply_json(json{}, [status(400)])
   ).
 
 
@@ -62,14 +59,11 @@ add_to_basket(Version, Url1):-
   uri_iri(Url2, Url1),
   with_mutex(lle_basket, (
     rdf_atom_md5(Url2, 1, Md5),
-    (
-      % The URL has already been added.
-      rdf(Resource, llo:md5, Md5),
-      rdf(Resource, llo:added, _)
-    ->
-      print_message(informational, already_added(Md5))
-    ;
-      store_url(Version, Md5, Url2)
+    (   % The URL has already been added.
+        rdf(Resource, llo:md5, Md5),
+        rdf(Resource, llo:added, _)
+    ->  print_message(informational, already_added(Md5))
+    ;   store_url(Version, Md5, Url2)
     )
   )).
 
@@ -87,7 +81,9 @@ store_url(Version, Md5, Url):-
 
 
 
-% Messages
+
+
+% MESSAGES %
 
 :- multifile(prolog:message//1).
 
