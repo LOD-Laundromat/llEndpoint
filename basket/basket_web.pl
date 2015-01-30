@@ -19,8 +19,6 @@ Web-based front-end to the LOD basket.
 
 :- use_module(plXsd(dateTime/xsd_dateTime_functions)).
 
-:- use_module(lle(lle_settings)).
-
 :- http_handler(root(basket), basket, [id(llBasket)]).
 
 
@@ -30,17 +28,14 @@ Web-based front-end to the LOD basket.
 basket(Request):-
   cors_enable,
   (   catch(
-        http_parameters(
-          Request,
-          [url(Url,[atom]),version(Version,[nonneg])]
-        ),
+        http_parameters(Request, [url(Url,[atom])]),
         _,
         fail
       ),
       is_uri(Url)
   ->  % Make sure that it is a URL.
-      add_to_basket(Version, Url),
-      
+      add_to_basket(Url),
+
       % HTTP status code 202 Accepted: The request has been accepted
       % for processing, but the processing has not been completed.
       reply_json(json{}, [status(202)])
@@ -50,32 +45,31 @@ basket(Request):-
   ).
 
 
-%! add_to_basket(+Version:positive_integer, +Url:url) is det.
+%! add_to_basket(+Url:atom) is det.
 
-add_to_basket(Version, Url1):-
+add_to_basket(Url):-
   % If the given argument is an IRI, then non-URL Unicode characters
   % may appear in it unescaped. This conversion escapes such characters
   % to ensure a valid URL.
-  uri_iri(Url2, Url1),
+  uri_iri(Uri, Url),
   with_mutex(lle_basket, (
-    rdf_atom_md5(Url2, 1, Md5),
+    rdf_atom_md5(Uri, 1, Md5),
     (   % The URL has already been added.
         rdf(Resource, llo:md5, Md5),
         rdf(Resource, llo:added, _)
     ->  print_message(informational, already_added(Md5))
-    ;   store_url(Version, Md5, Url2)
+    ;   add_to_basket(Md5, Uri)
     )
   )).
 
 
-%! store_url(+Version:positive_integer, +Md5:atom, +Url:url) is det.
+%! add_to_basket(+Md5:atom, +Uri:atom) is det.
 
-store_url(Version, Md5, Url):-
-  lle_version_graph(Version, Graph),
+add_to_basket(Md5, Uri):-
   rdf_global_id(ll:Md5, Datadoc),
   rdf_assert(Datadoc, rdf:type, llo:'URL', Graph),
   rdf_assert(Datadoc, llo:md5, literal(type(xsd:string,Md5)), Graph),
-  rdf_assert(Datadoc, llo:url, Url, Graph),
+  rdf_assert(Datadoc, llo:url, Uri, Graph),
   get_dateTime(Added),
   rdf_assert(Datadoc, llo:added, literal(type(xsd:dateTime,Added)), Graph).
 

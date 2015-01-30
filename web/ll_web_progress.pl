@@ -12,15 +12,12 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
-:- use_module(plHttp(request_ext)).
-
 :- use_module(plHtml(html_pl_term)).
 
 :- use_module(plRdf(term/rdf_literal)).
 
 :- use_module(plTabular(rdf_html_table_pairs)).
 
-:- use_module(lle(lle_settings)).
 :- use_module(lle(web/ll_web_generics)).
 
 :- http_handler(lle(progress), ll_web_progress, [priority(1)]).
@@ -31,47 +28,44 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 %! ll_web_progress(+Request:list(nvpair))// is det.
 
-ll_web_progress(Request):-
-  lwm_debug_version(DefaultVersion),
-  request_query_nvpair(Request, version, Version, DefaultVersion),
-  lle_version_graph(Version, Graph),
+ll_web_progress(_):-
   user:current_html_style(HtmlStyle),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
     \lle_body([
-      \pending_table(Graph),
-      \unpacking_table(Graph),
-      \unpacked_table(Graph),
-      \cleaning_table(Graph),
-      \cleaned_table(Graph)
+      \pending_table,
+      \unpacking_table,
+      \unpacked_table,
+      \cleaning_table,
+      \cleaned_table
     ])
   ).
 
 
-%! pending_table(+Graph:atom)// is det.
+%! pending_table// is det.
 
-pending_table(Graph) -->
+pending_table -->
   {findall(
     Added-[Datadoc,Added],
     (
-      rdf(Datadoc, llo:added, Added, Graph),
-      \+ rdf(Datadoc, llo:startUnpack, _, Graph)
+      rdf_has(Datadoc, llo:added, Added),
+      \+ rdf_has(Datadoc, llo:startUnpack, _)
     ),
     Pairs
   )},
   progress_table(' pending data documents.', 'Added', Pairs).
 
 
-%! unpacking_table(+Graph:atom)// is det.
+%! unpacking_table// is det.
 
-unpacking_table(Graph) -->
+unpacking_table -->
   {
     findall(
       StartUnpack2-[Datadoc,StartUnpack1],
       (
-        rdf(Datadoc, llo:startUnpack, StartUnpack1, Graph),
-        \+ rdf(Datadoc, llo:endUnpack, _, Graph),
+        rdf_has(Datadoc, llo:startUnpack, StartUnpack1),
+        \+ rdf_has(Datadoc, llo:endUnpack, _),
         rdf_literal_data(value, StartUnpack1, StartUnpack2)
       ),
       Pairs
@@ -84,31 +78,35 @@ unpacking_table(Graph) -->
   ).
 
 
-%! unpacked_table(+Graph:atom)// is det.
+%! unpacked_table// is det.
 
-unpacked_table(Graph) -->
-  {findall(
-    EndUnpack-[Datadoc,EndUnpack],
-    (
-      rdf(Datadoc, llo:endUnpack, EndUnpack, Graph),
-      \+ rdf(Datadoc, llo:startClean, _, Graph)
-    ),
-    Pairs
-  )},
+unpacked_table -->
+  {
+    findall(
+      EndUnpack-[Datadoc,EndUnpack],
+      (
+        rdf_has(Datadoc, llo:endUnpack, EndUnpack),
+        \+ rdf_has(Datadoc, llo:startClean, _)
+      ),
+      Pairs
+    )
+  },
   progress_table(' unpacked data documents.', 'Unpacking end', Pairs).
 
 
-%! cleaning_table(+Graph:atom)// is det.
+%! cleaning_table// is det.
 
-cleaning_table(Graph) -->
-  {findall(
-    StartClean-[Datadoc,StartClean],
-    (
-      rdf(Datadoc, llo:startClean, StartClean, Graph),
-      \+ rdf(Datadoc, llo:endClean, _, Graph)
-    ),
-    Pairs
-  )},
+cleaning_table -->
+  {
+    findall(
+      StartClean-[Datadoc,StartClean],
+      (
+        rdf_has(Datadoc, llo:startClean, StartClean),
+        \+ rdf_has(Datadoc, llo:endClean, _)
+      ),
+      Pairs
+    )
+  },
   progress_table(
     ' data documents are being cleaned.',
     'Cleaning start',
@@ -116,19 +114,23 @@ cleaning_table(Graph) -->
   ).
 
 
-%! cleaned_table(+Graph:atom)// is det.
+%! cleaned_table// is det.
 
-cleaned_table(Graph) -->
-  {findall(
-    EndClean-[Datadoc,EndClean],
-    rdf(Datadoc, llo:endClean, EndClean, Graph),
-    Pairs
-  )},
+cleaned_table -->
+  {
+    findall(
+      EndClean-[Datadoc,EndClean],
+      rdf_has(Datadoc, llo:endClean, EndClean),
+      Pairs
+    )
+  },
   progress_table(' cleaned data documents.', 'Cleaning end', Pairs).
 
 
 
-% Helpers
+
+
+% HELPERS %
 
 %! progress_table(
 %!   +CaptionPostfix:atom,

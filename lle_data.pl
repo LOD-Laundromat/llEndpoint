@@ -2,8 +2,7 @@
 
 /** <module> LOD Laundromat: data
 
-Serving of data cleaned by the LOD Washing Machine.
-Serving of data cleaned by the LOD Washing Machine.
+Serves data cleaned by the LOD Washing Machine.
 
 @author Wouter Beek
 @version 2014/08, 2015/01
@@ -18,8 +17,6 @@ Serving of data cleaned by the LOD Washing Machine.
 :- use_module(plUri(uri_query)).
 
 :- use_module(plHttp(request_ext)).
-
-:- use_module(lle(lle_settings)).
 
 :- http_handler(lle(data), clean_data, [prefix]).
 
@@ -50,3 +47,26 @@ data_md5(Request, Md5):-
   atomic_list_concat(['',data,Md5], '/', Path), !.
 data_md5(Request, Md5):-
   request_query_nvpair(Request, md5, Md5).
+
+
+
+%! lle_data_file(
+%!   +Md5:atom,
+%!   +Kind:oneof([clean,dirty]),
+%!   -Spec:compound
+%! ) is det.
+
+lle_data_file(Md5, Kind, Spec):-
+	absolute_file_name(data(Md5), Md5Dir, [access(read),file_type(directory)]),
+  lle_data_file_exists(Md5Dir, Kind, Name),
+  atomic_list_concat([Md5,Name], '/', RelativePath),
+  Spec = data(RelativePath).
+
+lle_data_file_exists(Md5Dir, Kind, TriplesName):-
+  atomic_list_concat([Kind,nt,gz], '.', TriplesName),
+  directory_file_path(Md5Dir, TriplesName, DataFile),
+  exists_file(DataFile), !.
+lle_data_file_exists(Md5Dir, Kind, QuadsName):-
+  atomic_list_concat([Kind,nq,gz], '.', QuadsName),
+  directory_file_path(Md5Dir, QuadsName, DataFile),
+  exists_file(DataFile).

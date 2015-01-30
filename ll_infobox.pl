@@ -21,11 +21,9 @@ for use in LOD Laundromat.
 
 :- use_module(plHttp(request_ext)).
 
-:- use_module(plRdf(term/rdf_string)).
+:- use_module(plRdf(api/rdf_read)).
 
 :- use_module(plTabular(rdf_html_table)).
-
-:- use_module(lle(lle_settings)).
 
 :- http_handler(lle(infobox), ll_infobox, [id(ll_infobox)]).
 
@@ -39,23 +37,16 @@ ll_infobox(Request):-
 
 ll_infobox_with_cors(Request):-
   request_query_nvpair(Request, md5, Md5), !,
-  lle_version_graph(Graph),
   aggregate_all(
     set([P,O]),
     (
-      rdf_string(Datadoc, llo:md5, Md5, Graph),
-      rdf(Datadoc, P, O, Graph)
+      rdf_plain_literal(Datadoc, llo:md5, Md5),
+      rdf_has(Datadoc, P, O)
     ),
     Rows
   ),
   phrase(
-    html(
-      \rdf_html_table(
-        _NoCaption,
-        Rows,
-        [graph(Graph),header_row(po)]
-      )
-    ),
+    html(\rdf_html_table(_NoCaption, Rows, [header_row(po)])),
     Tokens
   ),
   print_html(Tokens).

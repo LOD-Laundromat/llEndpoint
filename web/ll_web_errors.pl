@@ -12,6 +12,7 @@ by the LOD Washing Machine.
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
@@ -19,13 +20,10 @@ by the LOD Washing Machine.
 
 :- use_module(generics(list_ext)).
 
-:- use_module(plHttp(request_ext)).
-
 :- use_module(plHtml(html_pl_term)).
 
 :- use_module(plTabular(rdf_html_table)).
 
-:- use_module(lle(lle_settings)).
 :- use_module(lle(web/ll_web_generics)).
 
 :- http_handler(lle(errors), ll_web_errors, [priority(1)]).
@@ -36,29 +34,24 @@ by the LOD Washing Machine.
 
 %! ll_web_errors(+Request:list(nvpair), +HtmlStyle)// is det.
 
-ll_web_errors(Request):-
-  lwm_debug_version(DefaultVersion),
-  request_query_nvpair(Request, version, Version, DefaultVersion),
-  lle_version_graph(Version, Graph),
+ll_web_errors(_):-
   user:current_html_style(HtmlStyle),
   reply_html_page(
     HtmlStyle,
     title('LOD Laundromat'),
-    \lle_body(\ll_web_errors(Graph))
+    \lle_body(\ll_web_errors)
   ).
 
 
-ll_web_errors(Graph) -->
+ll_web_errors -->
   {
-    % The of aggregation prevents the same MD5 from
+    % The aggregation prevents the same MD5 from
     % showing up multiple times.
     aggregate_all(
       set(Error2-Datadoc),
       (
-        (
-          rdf(Datadoc, llo:exception, Error1, Graph)
-        ;
-          rdf(Datadoc, llo:warning, Error1, Graph)
+        (   rdf_has(Datadoc, llo:exception, Error1)
+        ;   rdf_has(Datadoc, llo:warning, Error1)
         ),
         once(exception_to_atom(Error1, Error2))
       ),
@@ -67,15 +60,15 @@ ll_web_errors(Graph) -->
     keysort(Pairs1, Pairs2),
     group_pairs_by_key(Pairs2, Pairs3)
   },
-  lwm_exception_tables(Graph, Pairs3).
+  lwm_exception_tables(Pairs3).
 
 
-lwm_exception_table(Graph, Exception, Datadocs1) -->
+lwm_exception_table(Exception, Datadocs1) -->
   {
     length(Datadocs1, Length),
     list_truncate(Datadocs1, 3, Datadocs2),
     sort(Datadocs2, Datadocs3),
-    maplist(datadoc_to_row(Graph), Datadocs3, Rows)
+    maplist(datadoc_to_row, Datadocs3, Rows)
   },
   rdf_html_table(
     html([
@@ -84,34 +77,34 @@ lwm_exception_table(Graph, Exception, Datadocs1) -->
       \html_pl_term(lwm,Exception)
     ]),
     [['Datadoc','URL','Path']|Rows],
-    [graph(Graph),header_row(true)]
+    [header_row(true)]
   ).
 
-lwm_exception_tables(_, []) --> [].
-lwm_exception_tables(Graph, [Exception-Datadocs|T]) -->
-  lwm_exception_table(Graph, Exception, Datadocs),
-  lwm_exception_tables(Graph, T).
+lwm_exception_tables([]) --> [].
+lwm_exception_tables([Exception-Datadocs|T]) -->
+  lwm_exception_table(Exception, Datadocs),
+  lwm_exception_tables(T).
 
 
-%! datadoc_source(+Graph:atom, +Datadoc:iri, -Source:list) is det.
+%! datadoc_source(+Datadoc:iri, -Source:list) is det.
 
-datadoc_source(Graph, Datadoc, [Url]):-
-  rdf(Datadoc, llo:url, Url, Graph), !.
-datadoc_source(Graph, Datadoc, Source):-
-  datadoc_source0(Graph, Datadoc, Source0), !,
+datadoc_source(Datadoc, [Url]):-
+  rdf_has(Datadoc, llo:url, Url), !.
+datadoc_source(Datadoc, Source):-
+  datadoc_source0(Datadoc, Source0), !,
   reverse(Source0, Source).
-datadoc_source(_, _, ['FAILURE','FAILURE']).
+datadoc_source(_, ['FAILURE','FAILURE']).
 
-datadoc_source0(Graph, Datadoc, [Path|T]):-
-  rdf(Datadoc, llo:path, literal(type(xsd:string,Path)), Graph),
-  rdf(Parentdoc, llo:containsEntry, Datadoc, Graph),
-  datadoc_source(Graph, Parentdoc, T).
+datadoc_source0(Datadoc, [Path|T]):-
+  rdf_has(Datadoc, llo:path, literal(type(xsd:string,Path))),
+  rdf_has(Parentdoc, llo:containsEntry, Datadoc),
+  datadoc_source(Parentdoc, T).
 
 
-%! datadoc_to_row(+Graph:atom, +Datadoc:iri, -Row:list) is det.
+%! datadoc_to_row(+Datadoc:iri, -Row:list) is det.
 
-datadoc_to_row(Graph, Datadoc, [Datadoc,Url,Path]):-
-  datadoc_source(Graph, Datadoc, [Url|Paths]),
+datadoc_to_row(Datadoc, [Datadoc,Url,Path]):-
+  datadoc_source(Datadoc, [Url|Paths]),
   atomic_list_concat(Paths, '-', Path).
 
 
