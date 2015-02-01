@@ -12,10 +12,12 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
+:- use_module(generics(meta_ext)).
 :- use_module(math(float_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 
+:- use_module(plRdf(api/rdf_read)).
 :- use_module(plRdf(term/rdf_literal)).
 
 :- use_module(plTabular(rdf_html_table_pairs)).
@@ -87,8 +89,8 @@ unpacking_table -->
 
 unpacked_table(Min0, Max0, Category) -->
   {
-    Min is Min0 * (1024 ** 3),
-    Max is Max0 * (1024 ** 3),
+    default_goal(gb_bound(Min0), Min),
+    default_goal(gb_bound(Max0), Max),
     findall(
       EndUnpack-[Datadoc,EndUnpack],
       (
@@ -97,8 +99,8 @@ unpacked_table(Min0, Max0, Category) -->
         rdf_typed_literal(
           Datadoc,
           llo:unpackedSize,
-          xsd:nonNegativeInteger,
-          UnpackedSize
+          UnpackedSize,
+          xsd:nonNegativeInteger
         ),
         between_float(Min, Max, UnpackedSize)
       ),
@@ -146,6 +148,13 @@ cleaned_table -->
 
 
 % HELPERS %
+
+gb_bound(X, X):-
+	var(X), !.
+gb_bound(X, Y):-
+  Y is X * (1024 ** 3).
+
+
 
 %! progress_table(
 %!   +CaptionPostfix:atom,
