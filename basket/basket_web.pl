@@ -67,11 +67,11 @@ add_to_basket(Url):-
 
 add_to_basket(Md5, Uri):-
   rdf_global_id(ll:Md5, Datadoc),
-  rdf_assert(Datadoc, rdf:type, llo:'URL', Graph),
-  rdf_assert(Datadoc, llo:md5, literal(type(xsd:string,Md5)), Graph),
-  rdf_assert(Datadoc, llo:url, Uri, Graph),
+  rdf_assert(Datadoc, rdf:type, llo:'URL'),
+  rdf_assert(Datadoc, llo:md5, literal(type(xsd:string,Md5))),
+  rdf_assert(Datadoc, llo:url, Uri),
   get_dateTime(Added),
-  rdf_assert(Datadoc, llo:added, literal(type(xsd:dateTime,Added)), Graph).
+  rdf_assert(Datadoc, llo:added, literal(type(xsd:dateTime,Added))).
 
 
 
