@@ -10,18 +10,16 @@
 
 scheme="http"
 
-authority="localhost:3020"
+authority="localhost:4001"
 
 path="/basket"
-
-version="11"
 
 # The input file with one URL per line.
 input=url.data
 
 while read line; do
-  url=${scheme}://${authority}${path};
-  command="curl --data \"url=${line}&version=${version}\" ${url}";
+  url=${scheme}://${authority}${path}?url\=${line};
+  command="curl ${url}";
   eval $command;
   # For debugging purposes, the command can be written to standard output.
   #echo $command;

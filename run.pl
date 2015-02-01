@@ -16,7 +16,7 @@
 :- use_module(plServer(web_modules)). % Web module registration.
 :- use_module(plServer(templates/menu_page)). % HTML Template.
 
-:- start_app_server.
+:- initialization(start_app_server).
 
 
 

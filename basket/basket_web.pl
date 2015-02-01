@@ -5,7 +5,7 @@
 Web-based front-end to the LOD basket.
 
 @author Wouter Beek
-@version 2014/06, 2014/08, 2015/01
+@version 2014/06, 2014/08, 2015/01-2015/02
 */
 
 :- use_module(library(http/http_cors)).
@@ -18,6 +18,8 @@ Web-based front-end to the LOD basket.
 :- use_module(generics(typecheck)).
 
 :- use_module(plXsd(dateTime/xsd_dateTime_functions)).
+
+:- use_module(plRdf(api/rdf_read)).
 
 :- http_handler(root(basket), basket, [id(llBasket)]).
 
@@ -52,12 +54,11 @@ add_to_basket(Url):-
   % may appear in it unescaped. This conversion escapes such characters
   % to ensure a valid URL.
   uri_iri(Uri, Url),
-gtrace,
   with_mutex(lle_basket, (
     rdf_atom_md5(Uri, 1, Md5),
     (   % The URL has already been added.
-        rdf(Resource, llo:md5, Md5),
-        rdf(Resource, llo:added, _)
+        rdf_typed_literal(Resource, llo:md5, Md5, xsd:string),
+        rdf_has(Resource, llo:added, _)
     ->  print_message(informational, already_added(Md5))
     ;   add_to_basket(Md5, Uri)
     )

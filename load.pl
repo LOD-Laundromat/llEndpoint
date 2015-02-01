@@ -59,10 +59,9 @@
 
 
 :- use_module(library(process)).
-%:- initialization(load_basket).
+:- initialization(thread_create(load_basket, _, [])).
 load_basket:-
-  sleep(10),
-  absolute_file_name(lle_basket('runBasket.sh'), File, [access(execute)]),
+  absolute_file_name(lle('basket/runBasket.sh'), File, [access(execute)]),
   file_directory_name(File, Directory),
   process_create(File, [], [cwd(Directory),detached(true)]).
 
