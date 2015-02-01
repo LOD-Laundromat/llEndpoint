@@ -5,12 +5,14 @@
 A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 @author Wouter Beek
-@version 2014/05-2014/06, 2014/08-2014/09, 2015/01
+@version 2014/05-2014/06, 2014/08-2014/09, 2015/01-2015/02
 */
 
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
+
+:- use_module(math(float_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 
@@ -26,8 +28,7 @@ A Web-based debug tool for tracking the progress of the LOD Washing Machine.
 
 
 
-%! ll_web_progress(+Request:list(nvpair))// is det.
-
+% Overview of LOD Washing Machine progress.
 ll_web_progress(_):-
   user:current_html_style(HtmlStyle),
   reply_html_page(
@@ -36,7 +37,9 @@ ll_web_progress(_):-
     \lle_body([
       \pending_table,
       \unpacking_table,
-      \unpacked_table,
+      \unpacked_table(_, 0.5, 'SMALL'),
+      \unpacked_table(0.5, 2.5, 'MEDIUM'),
+      \unpacked_table(2.5, 30, 'LARGE'),
       \cleaning_table,
       \cleaned_table
     ])
@@ -46,15 +49,17 @@ ll_web_progress(_):-
 %! pending_table// is det.
 
 pending_table -->
-  {findall(
-    Added-[Datadoc,Added],
-    (
-      rdf_has(Datadoc, llo:added, Added),
-      \+ rdf_has(Datadoc, llo:startUnpack, _)
-    ),
-    Pairs
-  )},
-  progress_table(' pending data documents.', 'Added', Pairs).
+  {
+    findall(
+      Added-[Datadoc,Added],
+      (
+        rdf_has(Datadoc, llo:added, Added),
+        \+ rdf_has(Datadoc, llo:startUnpack, _)
+      ),
+      Rows
+    )
+  },
+  progress_table(' pending data documents.', 'Added', Rows).
 
 
 %! unpacking_table// is det.
@@ -68,30 +73,40 @@ unpacking_table -->
         \+ rdf_has(Datadoc, llo:endUnpack, _),
         rdf_literal_data(value, StartUnpack1, StartUnpack2)
       ),
-      Pairs
+      Rows
     )
   },
   progress_table(
     ' data documents are being unpacked.',
     'Unpacking start',
-    Pairs
+    Rows
   ).
 
 
-%! unpacked_table// is det.
+%! unpacked_table(?Min:float, ?Max:float, +Category:atom)// is det.
 
-unpacked_table -->
+unpacked_table(Min0, Max0, Category) -->
   {
+    Min is Min0 * (1024 ** 3),
+    Max is Max0 * (1024 ** 3),
     findall(
       EndUnpack-[Datadoc,EndUnpack],
       (
         rdf_has(Datadoc, llo:endUnpack, EndUnpack),
-        \+ rdf_has(Datadoc, llo:startClean, _)
+        \+ rdf_has(Datadoc, llo:startClean, _),
+        rdf_typed_literal(
+          Datadoc,
+          llo:unpackedSize,
+          xsd:nonNegativeInteger,
+          UnpackedSize
+        ),
+        between_float(Min, Max, UnpackedSize)
       ),
       Pairs
-    )
+    ),
+    atomic_list_concat([' unpacked',Category,'data documents.'], ' ', Caption)
   },
-  progress_table(' unpacked data documents.', 'Unpacking end', Pairs).
+  progress_table(Caption, 'Unpacking end', Pairs).
 
 
 %! cleaning_table// is det.

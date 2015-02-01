@@ -52,6 +52,7 @@ add_to_basket(Url):-
   % may appear in it unescaped. This conversion escapes such characters
   % to ensure a valid URL.
   uri_iri(Uri, Url),
+gtrace,
   with_mutex(lle_basket, (
     rdf_atom_md5(Uri, 1, Md5),
     (   % The URL has already been added.
