@@ -56,12 +56,3 @@
 :- use_module(lle(web/ll_web_errors)).
 :- use_module(lle(web/ll_web_progress)).
 
-
-
-:- use_module(library(process)).
-:- initialization(thread_create(load_basket, _, [])).
-load_basket:-
-  absolute_file_name(lle('basket/runBasket.sh'), File, [access(execute)]),
-  file_directory_name(File, Directory),
-  process_create(File, [], [cwd(Directory),detached(true)]).
-

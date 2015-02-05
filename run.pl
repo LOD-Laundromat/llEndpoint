@@ -28,6 +28,7 @@ user:current_html_style(menu_page).
 % Web root.
 :- multifile(http:location/3).
 :- dynamic(http:location/3).
+
 http:location(lle, /, []).
 
 
@@ -35,6 +36,7 @@ http:location(lle, /, []).
 % Register Web modules.
 :- dynamic(user:web_module/2).
 :- multifile(user:web_module/2).
+
 user:web_module(plTabular, rdf_tabular).
 user:web_module('LOD Errors', ll_web_errors).
 user:web_module('LOD Progress', ll_web_progress).
