@@ -21,6 +21,7 @@
      plLattice,
      plLatticeDraw,
      plRdf,
+     plRdfDraw,
      plServer,
      plSet,
      plSvg,
