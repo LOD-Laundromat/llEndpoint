@@ -25,7 +25,6 @@ Web-based front-end to the LOD basket.
 
 basket(Request):-
   cors_enable,
-  memberchk(pool(client(_,_,_,Out)), Request),
   (   http_parameters(Request, [uri(Uri,[atom])]),
       is_uri(Uri)
   ->  % Make sure that it is a URL.

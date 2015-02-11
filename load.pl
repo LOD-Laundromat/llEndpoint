@@ -53,6 +53,7 @@
 % Register HTTP handlers.
 :- use_module(plTabular(rdf_tabular)).
 :- use_module(lle(lle_data)).
+:- use_module(lle(lle_reset)).
 :- use_module(lle(basket/basket_web)).
 :- use_module(lle(web/ll_web_errors)).
 :- use_module(lle(web/ll_web_progress)).
