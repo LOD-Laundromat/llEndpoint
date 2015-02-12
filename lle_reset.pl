@@ -25,7 +25,7 @@ Web Service for resetting LOD Laundromat documents.
 
 
 
-reset(Reset):-
+reset(Request):-
   cors_enable,
   (   http_parameters(Request, [datadoc(Datadoc,[atom])]),
       is_uri(Datadoc)
