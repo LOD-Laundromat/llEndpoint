@@ -42,7 +42,8 @@ ll_web_progress_virtuoso -->
   unpacked_table_small,
   unpacked_table_medium,
   unpacked_table_large,
-  cleaning_table.
+  cleaning_table,
+  cleaned_table.
 
 
 %! pending_table// is det.
@@ -238,7 +239,7 @@ lwm_version_graph(Graph):-
   ll_authority(Authority),
   uri_components(
     Graph,
-    uri_components(Scheme,Authority,'',_,'12')
+    uri_components(Scheme,Authority,'',_,'11')
   ).
 
 
