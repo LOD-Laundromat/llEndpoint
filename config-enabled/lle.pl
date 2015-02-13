@@ -41,3 +41,6 @@ cliopatria:menu_item(600=lle/plTabular, plTabular).
   :- endif.
 :- endif.
 
+:- use_module(lle(lle_settings)).
+:- initialization(init_lle_settings(4001)).
+
