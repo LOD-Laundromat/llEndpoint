@@ -13,7 +13,7 @@ Web Service for resetting LOD Laundromat documents.
 :- use_module(library(http/http_cors)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
-:- use_module(library(semweb/rdf_db), [rdf_node/1]).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
 :- use_module(user(user_db)).
 
