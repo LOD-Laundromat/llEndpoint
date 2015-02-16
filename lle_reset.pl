@@ -19,7 +19,7 @@ Web Service for resetting LOD Laundromat documents.
 
 :- use_module(generics(typecheck)).
 
-:- http_handler(root(reset), reset, [id(llReset)]).
+:- http_handler('/reset', reset, [id(llReset)]).
 
 
 
