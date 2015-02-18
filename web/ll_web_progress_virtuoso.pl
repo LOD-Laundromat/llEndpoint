@@ -15,6 +15,7 @@ Web-based overview of ClioPatria progress.
 
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(lists), except([delete/3,subset/2])).
 :- use_module(library(option)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
@@ -32,9 +33,21 @@ Web-based overview of ClioPatria progress.
 
 :- use_module(plTabular(rdf_html_table)).
 
+:- use_module(lle(web/ll_web_generics)).
+
+:- http_handler(lle(progress/virtuoso), ll_web_progress_virtuoso, []).
 
 
 
+
+
+ll_web_progress_virtuoso(_):-
+  user:current_html_style(HtmlStyle),
+  reply_html_page(
+    HtmlStyle,
+    title('LOD Laundromat - Virtuoso'),
+    \lle_body(\ll_web_progress_virtuoso)
+  ).
 
 ll_web_progress_virtuoso -->
   pending_table,

@@ -14,6 +14,7 @@ Web-based overview of ClioPatria progress.
 */
 
 :- use_module(library(http/html_write)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
 :- use_module(generics(meta_ext)).
@@ -26,9 +27,21 @@ Web-based overview of ClioPatria progress.
 
 :- use_module(plTabular(rdf_html_table_pairs)).
 
+:- use_module(lle(web/ll_web_generics)).
+
+:- http_handler(lle(progress/cliopatria), ll_web_progress_cliopatria, []).
 
 
 
+
+
+ll_web_progress_cliopatria(_):-
+  user:current_html_style(HtmlStyle),
+  reply_html_page(
+    HtmlStyle,
+    title('LOD Laundromat - ClioPatria'),
+    \lle_body(\ll_web_progress_cliopatria)
+  ).
 
 ll_web_progress_cliopatria -->
   html([
