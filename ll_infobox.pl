@@ -23,7 +23,7 @@ for use in LOD Laundromat.
 
 :- use_module(plRdf(api/rdf_read)).
 
-:- use_module(plTabular(rdf_html_table)).
+:- use_module(plRdfHtml(rdf_html_table)).
 
 :- http_handler(lle(infobox), ll_infobox, [id(ll_infobox)]).
 

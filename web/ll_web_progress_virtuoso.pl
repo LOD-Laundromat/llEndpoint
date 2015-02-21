@@ -31,7 +31,7 @@ Web-based overview of ClioPatria progress.
 
 :- use_module(plSparql(query/sparql_query_api)).
 
-:- use_module(plTabular(rdf_html_table)).
+:- use_module(plRdfHtml(rdf_html_table)).
 
 :- use_module(lle(web/ll_web_generics)).
 
@@ -262,7 +262,7 @@ lwm_version_graph(Graph):-
 progress_table(CaptionPostfix, Rows) -->
   {length(Rows, Length)},
   rdf_html_table(
-		html([Length,CaptionPostfix]),
+		html([\html_pl_term(thousands_integer(Length)),CaptionPostfix]),
     [['Data document']|Rows],
     [
       header_column(true),

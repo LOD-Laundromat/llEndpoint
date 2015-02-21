@@ -22,6 +22,7 @@
      plLatticeDraw,
      plRdf,
      plRdfDraw,
+     plRdfHtml,
      plServer,
      plSet,
      plSparql,

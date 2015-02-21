@@ -22,7 +22,7 @@ by the LOD Washing Machine.
 
 :- use_module(plHtml(html_pl_term)).
 
-:- use_module(plTabular(rdf_html_table)).
+:- use_module(plRdfHtml(rdf_html_table)).
 
 :- use_module(lle(web/ll_web_generics)).
 

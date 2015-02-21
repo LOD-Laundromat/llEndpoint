@@ -25,7 +25,7 @@ Web-based overview of ClioPatria progress.
 :- use_module(plRdf(api/rdf_read)).
 :- use_module(plRdf(term/rdf_literal)).
 
-:- use_module(plTabular(rdf_html_table_pairs)).
+:- use_module(plRdfHtml(rdf_html_table_pairs)).
 
 :- use_module(lle(web/ll_web_generics)).
 
