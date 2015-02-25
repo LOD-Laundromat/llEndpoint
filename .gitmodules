@@ -73,3 +73,6 @@
 [submodule "plRdfHtml"]
 	path = plRdfHtml
 	url = https://github.com/wouterbeek/plRdfHtml.git
+[submodule "plRdfEntailment"]
+	path = plRdfEntailment
+	url = https://github.com/wouterbeek/plRdfEntailment.git

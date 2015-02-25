@@ -14,16 +14,6 @@ user:current_html_style(cliopatria(default)).
 
 
 
-/*
-% HTML resources.
-:- html_resource(
-     css(plTabular),
-     [requires([css('plTabular.css')]),virtual(true)]
-   ).
-*/
-
-
-
 % ClioPatria menu items.
 :- multifile(cliopatria:menu_item/2).
 cliopatria:menu_item(500=lle/ll_web_errors, 'LOD Errors').
