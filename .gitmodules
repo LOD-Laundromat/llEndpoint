@@ -1,6 +1,3 @@
-[submodule "plServer"]
-	path = plServer
-	url = https://github.com/wouterbeek/plServer.git
 [submodule "Prolog-Library-Collection"]
 	path = Prolog-Library-Collection
 	url = https://github.com/wouterbeek/Prolog-Library-Collection.git
@@ -16,9 +13,6 @@
 [submodule "plGraph"]
 	path = plGraph
 	url = https://github.com/wouterbeek/plGraph.git
-[submodule "plDcg"]
-	path = plDcg
-	url = https://github.com/wouterbeek/plDcg.git
 [submodule "plXsd"]
 	path = plXsd
 	url = https://github.com/wouterbeek/plXsd.git
