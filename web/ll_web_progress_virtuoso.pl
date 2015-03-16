@@ -22,12 +22,11 @@ Web-based overview of ClioPatria progress.
 :- use_module(library(settings)).
 :- use_module(library(uri)).
 
-:- use_module(generics(list_ext)).
-:- use_module(generics(meta_ext)).
+:- use_module(plc(generics/list_ext)).
+:- use_module(plc(generics/meta_ext)).
 
 :- use_module(plHtml(html_pl_term)).
-
-:- use_module(plServer(templates/menu_page)).
+:- use_module(plHtml(templates/menu_page)).
 
 :- use_module(plSparql(query/sparql_query_api)).
 

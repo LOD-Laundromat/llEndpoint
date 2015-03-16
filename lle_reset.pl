@@ -17,7 +17,7 @@ Web Service for resetting LOD Laundromat documents.
 
 :- use_module(user(user_db)).
 
-:- use_module(generics(typecheck)).
+:- use_module(plc(generics/typecheck)).
 
 :- http_handler('/reset', reset, [id(llReset)]).
 

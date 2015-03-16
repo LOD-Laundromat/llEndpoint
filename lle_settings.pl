@@ -24,11 +24,11 @@ Settings for the LOD Laundromat Endpoint.
 user:prolog_file_type(conf, configuration).
 
 :- setting(
-     endpoint,
-     oneof([both,cliopatria,virtuoso]),
-     both,
-     'The endpoint that is used to store the crawling metadata in.'
-   ).
+  endpoint,
+  oneof([both,cliopatria,virtuoso]),
+  both,
+  'The endpoint that is used to store the crawling metadata in.'
+).
 
 
 

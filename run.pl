@@ -12,9 +12,10 @@
 :- use_module(load_project).
 :- load_subproject(lle, plServer).
 
-:- use_module(plServer(app_server)).
-:- use_module(plServer(web_modules)). % Web module registration.
-:- use_module(plServer(templates/menu_page)). % HTML Template.
+:- use_module(plc(server/app_server)).
+
+:- use_module(plHtml(web_modules)). % Web module registration.
+:- use_module(plHtml(templates/menu_page)). % HTML Template.
 
 :- use_module(lle(lle_settings)).
 

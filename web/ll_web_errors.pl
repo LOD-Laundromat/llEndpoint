@@ -18,7 +18,7 @@ by the LOD Washing Machine.
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 :- use_module(library(semweb/rdfs)).
 
-:- use_module(generics(list_ext)).
+:- use_module(plc(generics/list_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 

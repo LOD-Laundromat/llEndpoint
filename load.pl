@@ -5,37 +5,35 @@
 
 :- multifile(user:project/3).
 :- dynamic(user:project/3).
-   user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
+user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 
 :- use_module(load_project).
 :- load_project([
-     mt-'ModelTheory',
-     plc-'Prolog-Library-Collection',
-     plDcg,
-     plGraph,
-     plGraphDraw,
-     plGraphViz,
-     plHtml,
-     plHttp,
-     plLangTag,
-     plLattice,
-     plLatticeDraw,
-     plRdf,
-     plRdfDraw,
-     plRdfEntailment,
-     plRdfHtml,
-     plServer,
-     plSet,
-     plSparql,
-     plSvg,
-     plTabular,
-     plTms,
-     plTree,
-     plTreeDraw,
-     plUri,
-     plXml,
-     plXsd
-   ]).
+  mt-'ModelTheory',
+  plc-'Prolog-Library-Collection',
+  plGraph,
+  plGraphDraw,
+  plGraphViz,
+  plHtml,
+  plHttp,
+  plLangTag,
+  plLattice,
+  plLatticeDraw,
+  plRdf,
+  plRdfDraw,
+  plRdfEntailment,
+  plRdfHtml,
+  plSet,
+  plSparql,
+  plSvg,
+  plTabular,
+  plTms,
+  plTree,
+  plTreeDraw,
+  plUri,
+  plXml,
+  plXsd
+]).
 
 
 
@@ -50,7 +48,7 @@
 
 
 % Load generic resources for Web pages.
-:- use_module(plServer(templates/template_generics)).
+:- use_module(plHtml(templates/template_generics)).
 
 
 

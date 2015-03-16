@@ -17,8 +17,8 @@ Web-based overview of ClioPatria progress.
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
-:- use_module(generics(meta_ext)).
-:- use_module(math(float_ext)).
+:- use_module(plc(generics/meta_ext)).
+:- use_module(plc(math/float_ext)).
 
 :- use_module(plHtml(html_pl_term)).
 

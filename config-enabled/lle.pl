@@ -10,6 +10,8 @@ http:location(lle, cliopatria(lle), []).
 
 
 % Current HTML style set to ClioPatria default.
+:- dynamic(user:current_html_style/1).
+:- multifile(user:current_html_style/1).
 user:current_html_style(cliopatria(default)).
 
 
