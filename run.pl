@@ -15,7 +15,7 @@
 :- use_module(plc(server/app_server)).
 
 :- use_module(plHtml(web_modules)). % Web module registration.
-:- use_module(plHtml(templates/menu_page)). % HTML Template.
+:- use_module(plHtml(template/menu_page)). % HTML Template.
 
 :- use_module(lle(lle_settings)).
 

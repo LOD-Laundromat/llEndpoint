@@ -48,7 +48,7 @@ user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 
 
 % Load generic resources for Web pages.
-:- use_module(plHtml(templates/template_generics)).
+:- use_module(plHtml(template/template_generics)).
 
 
 
