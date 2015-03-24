@@ -10,7 +10,6 @@
 
 
 :- use_module(load_project).
-:- load_subproject(lle, plServer).
 
 :- use_module(plc(server/app_server)).
 

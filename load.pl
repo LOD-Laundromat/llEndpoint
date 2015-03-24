@@ -9,27 +9,16 @@ user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 
 :- use_module(load_project).
 :- load_project([
-  mt-'ModelTheory',
   plc-'Prolog-Library-Collection',
   plGraph,
-  plGraphDraw,
-  plGraphViz,
   plHtml,
   plHttp,
   plLangTag,
-  plLattice,
-  plLatticeDraw,
   plRdf,
-  plRdfDraw,
-  plRdfEntailment,
   plRdfHtml,
   plSet,
   plSparql,
-  plSvg,
-  plTabular,
-  plTms,
   plTree,
-  plTreeDraw,
   plUri,
   plXml,
   plXsd
