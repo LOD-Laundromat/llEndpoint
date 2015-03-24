@@ -20,7 +20,6 @@ user:current_html_style(cliopatria(default)).
 :- multifile(cliopatria:menu_item/2).
 cliopatria:menu_item(500=lle/ll_web_errors, 'LOD Errors').
 cliopatria:menu_item(500=lle/ll_web_progress, 'LOD Progress').
-cliopatria:menu_item(600=lle/plTabular, plTabular).
 
 
 

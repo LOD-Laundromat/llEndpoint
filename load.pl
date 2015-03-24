@@ -42,8 +42,6 @@ user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 
 
 % Register HTTP handlers.
-:- use_module(plTabular(rdf_tabular)).
-
 :- use_module(lle(lle_data)).
 :- use_module(lle(lle_reset)).
 :- use_module(lle(basket/basket_web)).
