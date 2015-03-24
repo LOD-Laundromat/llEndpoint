@@ -172,16 +172,19 @@ build_unpacked_query(Min, Max, Query2):-
     not([
       rdf(var(datadoc), llo:startClean, var(startClean))
     ]),
-    rdf(var(datadoc), llo:unpackedSize, var(unpackedSize))
+    union(
+      [rdf(var(datadoc), llo:unpackedSize, var(size))],
+      [rdf(var(datadoc), llo:downloadSize, var(size))]
+    )
   ],
 
   % Insert the range restriction on the unpacked file size as a filter.
   (   nonvar(Min)
-  ->  MinFilter = >(var(unpackedSize),Min)
+  ->  MinFilter = >(var(size),Min)
   ;   true
   ),
   (   nonvar(Max)
-  ->  MaxFilter = <(var(unpackedSize),Max)
+  ->  MaxFilter = <(var(size),Max)
   ;   true
   ),
   exclude(var, [MinFilter,MaxFilter], FilterComponents),
