@@ -4,9 +4,6 @@
 [submodule "plHtml"]
 	path = plHtml
 	url = https://github.com/wouterbeek/plHtml.git
-[submodule "plTabular"]
-	path = plTabular
-	url = https://github.com/wouterbeek/plTabular.git
 [submodule "plRdf"]
 	path = plRdf
 	url = https://github.com/wouterbeek/plRdf.git
@@ -34,39 +31,12 @@
 [submodule "plTree"]
 	path = plTree
 	url = https://github.com/wouterbeek/plTree.git
-[submodule "plTms"]
-	path = plTms
-	url = https://github.com/wouterbeek/plTms.git
-[submodule "plTreeDraw"]
-	path = plTreeDraw
-	url = https://github.com/wouterbeek/plTreeDraw.git
-[submodule "plLatticeDraw"]
-	path = plLatticeDraw
-	url = https://github.com/wouterbeek/plLatticeDraw.git
 [submodule "plLattice"]
 	path = plLattice
 	url = https://github.com/wouterbeek/plLattice.git
-[submodule "plGraphDraw"]
-	path = plGraphDraw
-	url = https://github.com/wouterbeek/plGraphDraw.git
-[submodule "plGraphViz"]
-	path = plGraphViz
-	url = https://github.com/wouterbeek/plGraphViz.git
-[submodule "plSvg"]
-	path = plSvg
-	url = https://github.com/wouterbeek/plSvg.git
-[submodule "ModelTheory"]
-	path = ModelTheory
-	url = https://github.com/wouterbeek/ModelTheory.git
-[submodule "plRdfDraw"]
-	path = plRdfDraw
-	url = https://github.com/wouterbeek/plRdfDraw.git
 [submodule "plSparql"]
 	path = plSparql
 	url = https://github.com/wouterbeek/plSparql.git
 [submodule "plRdfHtml"]
 	path = plRdfHtml
 	url = https://github.com/wouterbeek/plRdfHtml.git
-[submodule "plRdfEntailment"]
-	path = plRdfEntailment
-	url = https://github.com/wouterbeek/plRdfEntailment.git
