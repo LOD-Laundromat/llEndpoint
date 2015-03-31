@@ -24,8 +24,5 @@ intended for debugging purposes.
 
 
 lle_body(Content) -->
-  html([
-    \html_requires(css(pure)),
-    div([style='margin-left: 1.5cm; margin-top: 0.5cm;'], Content)
-  ]).
+  html(div([style='margin-left: 1.5cm; margin-top: 0.5cm;'], Content)).
 

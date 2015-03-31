@@ -10,7 +10,7 @@
 Web-based overview of ClioPatria progress.
 
 @author Wouter Beek
-@version 2015/02
+@version 2015/02-2015/03
 */
 
 :- use_module(library(http/html_write)).
@@ -20,6 +20,7 @@ Web-based overview of ClioPatria progress.
 :- use_module(plc(generics/meta_ext)).
 :- use_module(plc(math/float_ext)).
 
+:- use_module(plHtml(html)).
 :- use_module(plHtml(html_pl_term)).
 
 :- use_module(plRdf(api/rdf_read)).
@@ -36,9 +37,7 @@ Web-based overview of ClioPatria progress.
 
 
 ll_web_progress_cliopatria(_):-
-  user:current_html_style(HtmlStyle),
-  reply_html_page(
-    HtmlStyle,
+  reply_styled_html_page(
     title('LOD Laundromat - ClioPatria'),
     \lle_body(\ll_web_progress_cliopatria)
   ).

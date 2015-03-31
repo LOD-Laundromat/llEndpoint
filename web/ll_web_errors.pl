@@ -16,10 +16,11 @@ by the LOD Washing Machine.
 :- use_module(library(lists)).
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
-:- use_module(library(semweb/rdfs)).
+:- use_module(library(semweb/rdfs), except([rdfs_label/3])).
 
 :- use_module(plc(generics/list_ext)).
 
+:- use_module(plHtml(html)).
 :- use_module(plHtml(html_pl_term)).
 
 :- use_module(plRdfHtml(rdf_html_table)).
@@ -35,9 +36,7 @@ by the LOD Washing Machine.
 %! ll_web_errors(+Request:list(nvpair), +HtmlStyle)// is det.
 
 ll_web_errors(_):-
-  user:current_html_style(HtmlStyle),
-  reply_html_page(
-    HtmlStyle,
+  reply_styled_html_page(
     title('LOD Laundromat'),
     \lle_body(\ll_web_errors)
   ).

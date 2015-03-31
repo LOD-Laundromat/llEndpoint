@@ -10,7 +10,7 @@
 Web-based overview of ClioPatria progress.
 
 @author Wouter Beek
-@version 2014/09, 2014/11, 2015/01-2015/02
+@version 2014/09, 2014/11, 2015/01-2015/03
 */
 
 :- use_module(library(apply)).
@@ -25,6 +25,7 @@ Web-based overview of ClioPatria progress.
 :- use_module(plc(generics/list_ext)).
 :- use_module(plc(generics/meta_ext)).
 
+:- use_module(plHtml(html)).
 :- use_module(plHtml(html_pl_term)).
 :- use_module(plHtml(template/menu_page)).
 
@@ -41,9 +42,7 @@ Web-based overview of ClioPatria progress.
 
 
 ll_web_progress_virtuoso(_):-
-  user:current_html_style(HtmlStyle),
-  reply_html_page(
-    HtmlStyle,
+  reply_styled_html_page(
     title('LOD Laundromat - Virtuoso'),
     \lle_body(\ll_web_progress_virtuoso)
   ).

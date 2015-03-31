@@ -23,7 +23,7 @@
 
 
 % Default HTML style.
-user:current_html_style(menu_page).
+user:current_html_style(easy_peasy).
 
 
 
