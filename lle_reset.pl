@@ -15,8 +15,6 @@ Web Service for resetting LOD Laundromat documents.
 :- use_module(library(http/http_parameters)).
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
-:- use_module(user(user_db)).
-
 :- use_module(plc(generics/typecheck)).
 
 :- http_handler('/reset', reset, [id(llReset)]).
@@ -40,7 +38,6 @@ reset(Request):-
 % from the store.
 
 remove_datadoc(Datadoc):-
-  authorized(write([], sparql)),
   aggregate_all(
     set(Warning),
     rdf_has(Datadoc, llo:warning, Warning),

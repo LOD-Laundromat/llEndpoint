@@ -25,8 +25,6 @@ user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 ]).
 
 
-
-% Register RDF prefixes.
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 
 :- rdf_register_prefix(bnode, 'http://lodlaundromat.org/.well-known/genid/').
@@ -34,17 +32,14 @@ user:project(llEndpoint, 'LOD Laundromat: Endpoint', lle).
 :- rdf_register_prefix(ll, 'http://lodlaundromat.org/resource/').
 :- rdf_register_prefix(llo, 'http://lodlaundromat.org/ontology/').
 
-
-
-% Load generic resources for Web pages.
-:- use_module(plHtml(template/template_generics)).
-
-
-
-% Register HTTP handlers.
 :- use_module(lle(lle_data)).
 :- use_module(lle(lle_reset)).
+:- use_module(lle(lle_settings)).
 :- use_module(lle(basket/basket_web)).
 :- use_module(lle(web/ll_web_errors)).
 :- use_module(lle(web/ll_web_progress)).
 
+:- multifile(http:location/3).
+:- dynamic(http:location/3).
+
+http:location(lle, /, []).

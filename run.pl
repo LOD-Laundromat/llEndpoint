@@ -8,45 +8,9 @@
 :- endif.
 
 
-
-:- use_module(load_project).
-
 :- use_module(plc(server/app_server)).
 
-:- use_module(plHtml(web_modules)). % Web module registration.
-:- use_module(plHtml(template/menu_page)). % HTML Template.
-
-:- use_module(lle(lle_settings)).
-
 :- initialization(init).
-
-
-
-% Default HTML style.
-user:current_html_style(easy_peasy).
-
-
-
-% Web root.
-:- multifile(http:location/3).
-:- dynamic(http:location/3).
-
-http:location(lle, /, []).
-
-
-
-% Register Web modules.
-:- dynamic(user:web_module/2).
-:- multifile(user:web_module/2).
-
-user:web_module('LOD Errors', ll_web_errors).
-user:web_module('LOD Progress', ll_web_progress).
-
-
-
-
-
-% INITIALIZATION %
 
 init:-
   absolute_file_name(data(.), DefaultDir, [file_type(directory)]),
@@ -66,6 +30,15 @@ init:-
       type(atom)
     ],
     [
+      default(virtuoso),
+      help('The endpoint that is used to store the LOD Washing Machine \c
+            metadata.'),
+      longflags([endpoint]),
+      opt(endpoint),
+      shortflags([e]),
+      type(atom)
+    ],
+    [
       default(false),
       help('Enumerate the supported command-line options.'),
       longflags([help]),
@@ -74,13 +47,13 @@ init:-
       type(boolean)
     ],
     [
-      default(virtuoso),
-      help('The endpoint that is used to store the LOD Washing Machine \c
-            metadata.'),
-      longflags([endpoint]),
-      opt(endpoint),
-      shortflags([e]),
-      type(atom)
+      default(3040),
+      help('The port at which the triple store for the scrape metadata \c
+            can be reached.'),
+      longflags([port]),
+      opt(port),
+      shortflags([p]),
+      type(integer)
     ]
   ],
   opt_arguments(OptSpec, Options, _),
@@ -96,5 +69,5 @@ init:-
 init(Options):-
   option(port(Port), Options),
   init_lle_settings(Port),
-  start_app_server(Port).
+  start_app_server([port(Port)]).
 

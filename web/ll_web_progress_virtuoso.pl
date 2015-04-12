@@ -27,7 +27,6 @@ Web-based overview of ClioPatria progress.
 
 :- use_module(plHtml(html)).
 :- use_module(plHtml(html_pl_term)).
-:- use_module(plHtml(template/menu_page)).
 
 :- use_module(plSparql(query/sparql_query_api)).
 
